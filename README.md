@@ -1,4 +1,4 @@
-# json-tools
+# JSON tools
 
 ## SE-2023 team project
 

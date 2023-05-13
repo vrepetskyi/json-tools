@@ -5,4 +5,5 @@ module put.ai.se.jsontools {
     opens put.ai.se.jsontools to javafx.fxml;
 
     exports put.ai.se.jsontools;
+    exports put.ai.se.jsontools.core;
 }

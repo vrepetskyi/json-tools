@@ -1,11 +1,15 @@
 package put.ai.se.jsontools.core;
 
+import javafx.scene.control.Alert;
+
+import java.io.IOException;
+
 public class JsonString implements JsonFormattable {
     private String value;
 
     public static boolean isValid(String value) {
         // TODO: check if value is a json string
-        return false;
+        return true;
     }
 
     public void setValue(String value) throws IllegalArgumentException {

@@ -6,11 +6,11 @@ import javafx.fxml.FXML;
 public class MainController {
     @FXML
     private void switchToFormat() throws IOException {
-        App.setRoot("format");
+        GuiController.setRoot("format");
     }
 
     @FXML
     private void switchToCompare() throws IOException {
-        App.setRoot("compare");
+        GuiController.setRoot("compare");
     }
 }

@@ -3,6 +3,7 @@ package put.ai.se.jsontools.core;
 public class JsonFormatter {
     public static String format(String source, JsonFormatParams params) throws IllegalArgumentException {
         JsonFormattable result;
+
         try {
             result = new JsonString(source);
         } catch (IllegalArgumentException e) {

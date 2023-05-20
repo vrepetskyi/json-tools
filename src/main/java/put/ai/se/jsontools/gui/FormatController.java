@@ -44,6 +44,6 @@ public class FormatController {
 
     @FXML
     private void switchToMain() throws IOException {
-        App.setRoot("main");
+        GuiController.setRoot("main");
     }
 }

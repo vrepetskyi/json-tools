@@ -11,6 +11,7 @@ public class JsonFormatter {
 
         switch (params.getStyleMode()) {
             case Minify:
+                result = new JsonMinifier(result);
                 break;
             case Prettify:
                 result = new JsonPrettifier(result);

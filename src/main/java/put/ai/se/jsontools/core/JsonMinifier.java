@@ -1,9 +1,9 @@
 package put.ai.se.jsontools.core;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
 
-public class JsonMinifier extends JsonFormattableDecorator
-{
+public class JsonMinifier extends JsonFormattableDecorator {
     public JsonMinifier(JsonFormattable source) {
         super(source);
     }
@@ -11,13 +11,9 @@ public class JsonMinifier extends JsonFormattableDecorator
     @Override
     public String getValue(JsonFormatParams params) {
         String value = super.getValue(params);
-        try {
-            Gson gson = new Gson();
-            JsonElement jsonElement = gson.fromJson(value, JsonElement.class);
-            value = gson.toJson(jsonElement);
-        } catch (JsonSyntaxException e) {
-            System.out.println("Invalid JSON format");
-        }
+        Gson gson = new Gson();
+        JsonElement jsonElement = gson.fromJson(value, JsonElement.class);
+        value = gson.toJson(jsonElement);
         return value;
     }
 }

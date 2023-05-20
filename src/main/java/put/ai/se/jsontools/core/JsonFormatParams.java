@@ -2,16 +2,16 @@ package put.ai.se.jsontools.core;
 
 import java.util.LinkedHashSet;
 
-public class JsonFormatParams {
-    private FilterMode filterMode;
-    private LinkedHashSet<String> filterKeys;
+public abstract class JsonFormatParams {
+    protected JsonStyleMode styleMode;
+    protected JsonFilterMode filterMode;
+    protected LinkedHashSet<String> filterKeys;
 
-    public JsonFormatParams(FilterMode filterMode, LinkedHashSet<String> filterKeys) {
-        this.filterMode = filterMode;
-        this.filterKeys = filterKeys;
+    public JsonStyleMode getStyleMode() {
+        return styleMode;
     }
 
-    public FilterMode getFilterMode() {
+    public JsonFilterMode getFilterMode() {
         return filterMode;
     }
 

@@ -18,3 +18,7 @@ buildNumber.properties
 
 #VSCode
 .vscode
+
+#intelliJ
+.idea
+json-tools.iml

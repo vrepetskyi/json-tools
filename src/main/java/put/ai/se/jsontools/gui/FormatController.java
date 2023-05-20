@@ -1,4 +1,4 @@
-package put.ai.se.jsontools;
+package put.ai.se.jsontools.gui;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
@@ -9,7 +9,7 @@ import put.ai.se.jsontools.core.JsonStyleMode;
 
 import java.io.IOException;
 
-public class JsonPrettifierController {
+public class FormatController {
     @FXML
     TextArea originalJson;
     @FXML
@@ -34,7 +34,7 @@ public class JsonPrettifierController {
     }
 
     @FXML
-    private void switchToPrimary() throws IOException {
-        App.setRoot("primary");
+    private void switchToMain() throws IOException {
+        App.setRoot("main");
     }
 }

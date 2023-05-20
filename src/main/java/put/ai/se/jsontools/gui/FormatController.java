@@ -3,11 +3,14 @@ package put.ai.se.jsontools.gui;
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
+import put.ai.se.jsontools.core.JsonFilterMode;
 import put.ai.se.jsontools.core.JsonFormatParamsBuilder;
 import put.ai.se.jsontools.core.JsonFormatter;
 import put.ai.se.jsontools.core.JsonStyleMode;
 
 import java.io.IOException;
+import java.util.Arrays;
+import java.util.LinkedHashSet;
 
 public class FormatController {
     @FXML
@@ -21,7 +24,13 @@ public class FormatController {
         String source = originalJson.getText();
 
         JsonFormatParamsBuilder params = new JsonFormatParamsBuilder();
+
+        // TODO: further params are for testing only
         params.setStyleMode(JsonStyleMode.Prettify);
+        // params.setStyleMode(JsonStyleMode.Minify);
+        params.setFilterMode(JsonFilterMode.Include);
+        // params.setFilterMode(JsonFilterMode.Exclude);
+        params.setFilterKeys(new LinkedHashSet<>(Arrays.asList("1")));
 
         try {
             prettyJson.setText(JsonFormatter.format(source, params));

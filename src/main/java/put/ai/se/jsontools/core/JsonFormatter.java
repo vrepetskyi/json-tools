@@ -9,6 +9,10 @@ public class JsonFormatter {
             throw new IllegalArgumentException("The source is not in JSON format", e);
         }
 
+        if (params.getFilterMode() != null) {
+            result = new JsonFilter(result);
+        }
+
         switch (params.getStyleMode()) {
             case Minify:
                 result = new JsonMinifier(result);

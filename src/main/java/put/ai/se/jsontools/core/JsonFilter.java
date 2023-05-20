@@ -1,6 +1,7 @@
 package put.ai.se.jsontools.core;
 
 import java.util.HashSet;
+import java.util.LinkedHashSet;
 import java.util.Set;
 
 import com.google.gson.Gson;
@@ -8,7 +9,6 @@ import com.google.gson.JsonElement;
 import com.google.gson.JsonParser;
 
 public class JsonFilter extends JsonFormattableDecorator {
-
     public JsonFilter(JsonFormattable source) {
         super(source);
     }
@@ -21,23 +21,29 @@ public class JsonFilter extends JsonFormattableDecorator {
         JsonElement jsonElement = gson.fromJson(value, JsonElement.class);
         JsonElement clone = JsonParser.parseString(jsonElement.toString());
 
-        if (params.getFilterMode() == JsonFilterMode.Include) {
-            Set<String> keys = new HashSet<>(clone.getAsJsonObject().keySet());
-            for (String entry : keys) {
-                if (!params.getFilterKeys().contains(entry)) {
-                    clone.getAsJsonObject().remove(entry);
+        LinkedHashSet<String> filterKeys = params.getFilterKeys();
+        if (filterKeys == null) {
+            filterKeys = new LinkedHashSet<>();
+        }
+
+        switch (params.getFilterMode()) {
+            case Include:
+                Set<String> keys = new HashSet<>(clone.getAsJsonObject().keySet());
+                for (String entry : keys) {
+                    if (!filterKeys.contains(entry)) {
+                        clone.getAsJsonObject().remove(entry);
+                    }
                 }
-            }
-            value = gson.toJson(clone);
-        } else if (params.getFilterMode() == JsonFilterMode.Exclude) {
-            for (String key : params.getFilterKeys()) {
-                if (clone.getAsJsonObject().has(key)) {
-                    clone.getAsJsonObject().remove(key);
+                value = gson.toJson(clone);
+                break;
+            case Exclude:
+                for (String key : filterKeys) {
+                    if (clone.getAsJsonObject().has(key)) {
+                        clone.getAsJsonObject().remove(key);
+                    }
                 }
-            }
-            value = gson.toJson(clone);
-        } else {
-            throw new IllegalArgumentException("Invalid filter mode");
+                value = gson.toJson(clone);
+                break;
         }
 
         return value;

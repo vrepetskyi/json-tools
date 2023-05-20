@@ -14,18 +14,8 @@ public class JsonFilter extends JsonFormattableDecorator {
     public String getValue(JsonFormatParams params) {
 
         String value = super.getValue(params); 
-        String jsonString = "{\n" + // to be replaced
-        "    \"name\": \"John\",\n" +
-        "    \"age\": 30,\n" +
-        "    \"city\": \"New York\",\n" +
-        "    \"country\": \"USA\",\n" +
-        "    \"attributes\": {\n" +
-        "        \"height\": 180,\n" +
-        "        \"weight\": 75\n" +
-        "    }\n" +
-        "}\n";
         Gson gson = new Gson();
-        JsonElement jsonElement = gson.fromJson(jsonString, JsonElement.class);
+        JsonElement jsonElement = gson.fromJson(value, JsonElement.class);
         JsonElement clone = JsonParser.parseString(jsonElement.toString());
 
         if (params.getFilterMode() == FilterMode.Include) {
@@ -37,7 +27,7 @@ public class JsonFilter extends JsonFormattableDecorator {
             }
             value = gson.toJson(clone);
         } 
-        else if (params.getFilterMode() == FilterMode.Exclude) 
+        else if (params.getFilterMode() == FilterMode.Exclude)
         {
             for (String key : params.getFilterKeys()) {
                 if (clone.getAsJsonObject().has(key)) {

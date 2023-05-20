@@ -1,16 +1,13 @@
 package put.ai.se.jsontools;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
-import put.ai.se.jsontools.core.JsonFormatParams;
-import put.ai.se.jsontools.core.JsonFormattable;
-import put.ai.se.jsontools.core.JsonPrettifier;
-import put.ai.se.jsontools.core.JsonString;
+import put.ai.se.jsontools.core.JsonFormatParamsBuilder;
+import put.ai.se.jsontools.core.JsonFormatter;
+import put.ai.se.jsontools.core.JsonStyleMode;
 
 import java.io.IOException;
-import java.util.LinkedHashSet;
-
-import static put.ai.se.jsontools.core.FilterMode.*;
 
 public class JsonPrettifierController {
     @FXML
@@ -21,16 +18,19 @@ public class JsonPrettifierController {
     @FXML
     public void prettifyJson() {
         prettyJson.setText("");
-        String str = originalJson.getText();
+        String source = originalJson.getText();
 
-        LinkedHashSet<String> lHS = new LinkedHashSet<String>();
-        lHS.add(str);
+        JsonFormatParamsBuilder params = new JsonFormatParamsBuilder();
+        params.setStyleMode(JsonStyleMode.Prettify);
 
-        JsonFormatParams params = new JsonFormatParams(Include, lHS);
-
-        JsonString json = new JsonString(str);
-        JsonPrettifier prettifier = new JsonPrettifier(json);
-        prettyJson.setText(prettifier.getValue(params));
+        try {
+            prettyJson.setText(JsonFormatter.format(source, params));
+        } catch (IllegalArgumentException e) {
+            Alert errorAlert = new Alert(Alert.AlertType.ERROR);
+            errorAlert.setHeaderText("Formatting error");
+            errorAlert.setContentText(e.getMessage());
+            errorAlert.showAndWait();
+        }
     }
 
     @FXML

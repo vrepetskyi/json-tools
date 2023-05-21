@@ -1,39 +1,31 @@
 package put.ai.se.jsontools.core;
 
-import java.util.LinkedHashSet;
-
 /**
- * The objective of the JsonFormatParams class is to provide a base class for defining parameters used for formatting JSON strings. It encapsulates the formatting options and provides methods to access these options.
+ * The objective of the JsonFormatParams class is to provide a base class for
+ * defining parameters used for formatting JSON strings. It encapsulates the
+ * formatting options and provides methods to access these options.
  */
-public abstract class JsonFormatParams {
-    protected JsonStyleMode styleMode;
-    protected JsonFilterMode filterMode;
-    protected LinkedHashSet<String> filterKeys;
+public class JsonFormatParams {
+    protected JsonFilterParams filter;
+    protected boolean prettify;
 
     /**
-     * Retrieves the formatting style mode for JSON strings.
+     * Retrieves the formatting style for JSON strings.
      *
-     * @return The formatting style mode as a {@link JsonStyleMode} enum value (Minify or Prettify).
+     * @return A boolean value that is true in case we should apply
+     *         {@link JsonPrettifier}; {@link JsonMinifier} otherwise.
      */
-    public JsonStyleMode getStyleMode() {
-        return styleMode;
+    public boolean getPrettify() {
+        return prettify;
     }
 
     /**
-     * Retrieves the filtering mode for JSON strings.
+     * Retrieves the filter parameters for JSON strings.
      *
-     * @return The filtering mode as a {@link JsonFilterMode} enum value (Include or Exclude).
+     * @return A {@link JsonFilterParams} object used for storing filtering
+     *         parameters.
      */
-    public JsonFilterMode getFilterMode() {
-        return filterMode;
-    }
-
-    /**
-     * Retrieves the set of keys to be filtered in the JSON string.
-     *
-     * @return A {@link LinkedHashSet<String>} containing the keys to be included or excluded from the JSON string.
-     */
-    public LinkedHashSet<String> getFilterKeys() {
-        return filterKeys;
+    public JsonFilterParams getFilter() {
+        return filter;
     }
 }

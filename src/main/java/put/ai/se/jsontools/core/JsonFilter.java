@@ -1,12 +1,9 @@
 package put.ai.se.jsontools.core;
 
-import java.util.HashSet;
 import java.util.LinkedHashSet;
-import java.util.Set;
 
 import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonParser;
+import com.google.gson.JsonObject;
 
 public class JsonFilter extends JsonFormattableDecorator {
     public JsonFilter(JsonFormattable source) {
@@ -17,35 +14,32 @@ public class JsonFilter extends JsonFormattableDecorator {
     public String getValue(JsonFormatParams params) {
         String value = super.getValue(params);
 
+        JsonFilterParams filter = params.getFilter();
+        if (filter == null)
+            return value;
+
         Gson gson = new Gson();
-        JsonElement jsonElement = gson.fromJson(value, JsonElement.class);
-        JsonElement clone = JsonParser.parseString(jsonElement.toString());
+        JsonObject filtered = gson.fromJson(value, JsonObject.class);
 
-        LinkedHashSet<String> filterKeys = params.getFilterKeys();
-        if (filterKeys == null) {
-            filterKeys = new LinkedHashSet<>();
+        LinkedHashSet<String> filterKeys = filter.getKeys();
+        if (filterKeys == null)
+            return filter.getExclude() ? value : "{}";
+
+        LinkedHashSet<String> sourceKeys = new LinkedHashSet<>(filtered.keySet());
+        if (filter.getExclude()) {
+            for (String sourceKey : sourceKeys) {
+                if (filterKeys.contains(sourceKey)) {
+                    filtered.remove(sourceKey);
+                }
+            }
+        } else {
+            for (String sourceKey : sourceKeys) {
+                if (!filterKeys.contains(sourceKey)) {
+                    filtered.remove(sourceKey);
+                }
+            }
         }
 
-        switch (params.getFilterMode()) {
-            case Include:
-                Set<String> keys = new HashSet<>(clone.getAsJsonObject().keySet());
-                for (String entry : keys) {
-                    if (!filterKeys.contains(entry)) {
-                        clone.getAsJsonObject().remove(entry);
-                    }
-                }
-                value = gson.toJson(clone);
-                break;
-            case Exclude:
-                for (String key : filterKeys) {
-                    if (clone.getAsJsonObject().has(key)) {
-                        clone.getAsJsonObject().remove(key);
-                    }
-                }
-                value = gson.toJson(clone);
-                break;
-        }
-
-        return value;
+        return gson.toJson(filtered);
     }
 }

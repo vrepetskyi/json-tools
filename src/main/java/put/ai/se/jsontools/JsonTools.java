@@ -1,16 +1,20 @@
 package put.ai.se.jsontools;
 
+import put.ai.se.jsontools.api.ApiController;
 import put.ai.se.jsontools.gui.GuiController;
 
 public class JsonTools {
     public static void main(String[] args) {
-        // TODO: ApiController thread
+        try {
+            new Thread(new ApiController()).start();
+        } catch (Throwable e) {
+            // TODO: log api start error
+        }
 
-        new Thread() {
-            @Override
-            public void run() {
-                javafx.application.Application.launch(GuiController.class);
-            }
-        }.start();
+        try {
+            new Thread(new GuiController()).start();
+        } catch (Throwable e) {
+            // TODO: log gui start error
+        }
     }
 }

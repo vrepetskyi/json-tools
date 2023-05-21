@@ -1,39 +1,38 @@
 package put.ai.se.jsontools.gui;
 
+import java.io.IOException;
+
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.TextArea;
-import put.ai.se.jsontools.core.JsonFilterMode;
 import put.ai.se.jsontools.core.JsonFormatParamsBuilder;
 import put.ai.se.jsontools.core.JsonFormatter;
-import put.ai.se.jsontools.core.JsonStyleMode;
-
-import java.io.IOException;
-import java.util.Arrays;
-import java.util.LinkedHashSet;
 
 public class FormatController {
     @FXML
-    TextArea originalJson;
+    TextArea source;
     @FXML
-    TextArea prettyJson;
+    TextArea result;
 
     @FXML
-    public void prettifyJson() {
-        prettyJson.setText("");
-        String source = originalJson.getText();
+    public void initialize() {
+        GuiController.setTitle("JSON tools - format");
+    }
+
+    @FXML
+    public void format() {
+        result.setText("");
 
         JsonFormatParamsBuilder params = new JsonFormatParamsBuilder();
 
         // TODO: further params are for testing only
-        params.setStyleMode(JsonStyleMode.Prettify);
-        // params.setStyleMode(JsonStyleMode.Minify);
-        params.setFilterMode(JsonFilterMode.Include);
+        params.setPrettify(true);
+        // params.setFilterMode(JsonFilterMode.Include);
         // params.setFilterMode(JsonFilterMode.Exclude);
-        params.setFilterKeys(new LinkedHashSet<>(Arrays.asList("1")));
+        // params.setFilterKeys(new LinkedHashSet<>(Arrays.asList("source")));
 
         try {
-            prettyJson.setText(JsonFormatter.format(source, params));
+            result.setText(JsonFormatter.format(source.getText(), params));
         } catch (IllegalArgumentException e) {
             Alert errorAlert = new Alert(Alert.AlertType.ERROR);
             errorAlert.setHeaderText("Formatting error");
@@ -43,7 +42,7 @@ public class FormatController {
     }
 
     @FXML
-    private void switchToMain() throws IOException {
-        GuiController.setRoot("main");
+    private void back() throws IOException {
+        GuiController.setRoot("menu");
     }
 }

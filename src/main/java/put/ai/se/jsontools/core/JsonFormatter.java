@@ -21,18 +21,12 @@ public class JsonFormatter {
             throw new IllegalArgumentException("The source is not in JSON format", e);
         }
 
-        if (params.getFilterMode() != null) {
-            result = new JsonFilter(result);
-        }
+        result = new JsonFilter(result);
 
-        switch (params.getStyleMode()) {
-            case Minify:
-                result = new JsonMinifier(result);
-                break;
-            case Prettify:
-                result = new JsonPrettifier(result);
-                break;
-        }
+        if (params.getPrettify())
+            result = new JsonPrettifier(result);
+        else
+            result = new JsonMinifier(result);
 
         return result.getValue(params);
     }

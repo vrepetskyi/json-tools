@@ -1,23 +1,26 @@
 package put.ai.se.jsontools.api;
 
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.OutputStream;
+import java.io.*;
 import java.util.Scanner;
 
+import com.google.gson.Gson;
+import com.google.gson.JsonElement;
+import com.google.gson.JsonObject;
+import com.google.gson.JsonParser;
 import com.sun.net.httpserver.HttpExchange;
-import put.ai.se.jsontools.core.JsonString;
 
 public class Handler {
     public static void handle(HttpExchange exchange) throws IOException {
-        String response = null;
-
         if ("GET".equals(exchange.getRequestMethod())) {
             String respText = "Invalid JSON";
-            InputStream in = exchange.getRequestBody();
+            InputStream input = exchange.getRequestBody();
             OutputStream output = exchange.getResponseBody();
-            Scanner s = new Scanner(in).useDelimiter("\\A");
-            respText = s.hasNext() ? s.next() : "";
+
+            Scanner s = new Scanner(input).useDelimiter("\\A");
+            String json = s.hasNext() ? s.next() : "";
+
+            JsonCommand jsonCommand = Parser.parse(json);
+            respText = jsonCommand.processData();
 
             exchange.sendResponseHeaders(200, respText.getBytes().length);
             output.write(respText.getBytes());

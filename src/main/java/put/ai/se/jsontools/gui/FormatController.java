@@ -14,14 +14,14 @@ import java.util.LinkedHashSet;
 
 public class FormatController {
     @FXML
-    TextArea originalJson;
+    TextArea input;
     @FXML
-    TextArea prettyJson;
+    TextArea output;
 
     @FXML
-    public void prettifyJson() {
-        prettyJson.setText("");
-        String source = originalJson.getText();
+    public void format() {
+        output.setText("");
+        String source = input.getText();
 
         JsonFormatParamsBuilder params = new JsonFormatParamsBuilder();
 
@@ -33,7 +33,7 @@ public class FormatController {
         params.setFilterKeys(new LinkedHashSet<>(Arrays.asList("1")));
 
         try {
-            prettyJson.setText(JsonFormatter.format(source, params));
+            output.setText(JsonFormatter.format(source, params));
         } catch (IllegalArgumentException e) {
             Alert errorAlert = new Alert(Alert.AlertType.ERROR);
             errorAlert.setHeaderText("Formatting error");
@@ -43,7 +43,7 @@ public class FormatController {
     }
 
     @FXML
-    private void switchToMain() throws IOException {
-        GuiController.setRoot("main");
+    private void back() throws IOException {
+        GuiController.setRoot("menu");
     }
 }

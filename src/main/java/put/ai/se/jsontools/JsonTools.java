@@ -1,6 +1,6 @@
 package put.ai.se.jsontools;
 
-import put.ai.se.jsontools.gui.App;
+import put.ai.se.jsontools.gui.GuiController;
 
 public class JsonTools {
     public static void main(String[] args) {
@@ -9,7 +9,7 @@ public class JsonTools {
         new Thread() {
             @Override
             public void run() {
-                javafx.application.Application.launch(App.class);
+                javafx.application.Application.launch(GuiController.class);
             }
         }.start();
     }

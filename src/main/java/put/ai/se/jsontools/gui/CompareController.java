@@ -6,6 +6,6 @@ import javafx.fxml.FXML;
 public class CompareController {
     @FXML
     private void switchToMain() throws IOException {
-        App.setRoot("main");
+        GuiController.setRoot("main");
     }
 }

@@ -16,7 +16,8 @@ public class JsonString implements JsonFormattable {
      * Checks whether the provided string is a valid JSON string.
      *
      * @param value The string to be checked.
-     * @return {@code true} if the provided string is a valid JSON string, {@code false} otherwise.
+     * @return {@code true} if the provided string is a valid JSON string,
+     *         {@code false} otherwise.
      */
     public static boolean isValid(String value) {
         try {
@@ -29,11 +30,13 @@ public class JsonString implements JsonFormattable {
             return false;
         }
     }
+
     /**
      * Sets the value of the JSON string.
      *
      * @param value The JSON string value to be assigned.
-     * @throws IllegalArgumentException If the provided value is not a valid JSON string.
+     * @throws IllegalArgumentException If the provided value is not a valid JSON
+     *                                  string.
      */
     public void setValue(String value) throws IllegalArgumentException {
         if (!isValid(value)) {
@@ -41,11 +44,13 @@ public class JsonString implements JsonFormattable {
         }
         this.value = value;
     }
+
     /**
      * Constructs a new `JsonString` object with the provided value.
      *
      * @param value The JSON string value.
-     * @throws IllegalArgumentException If the provided value is not a valid JSON string.
+     * @throws IllegalArgumentException If the provided value is not a valid JSON
+     *                                  string.
      */
     public JsonString(String value) throws IllegalArgumentException {
         setValue(value);

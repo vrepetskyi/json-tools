@@ -24,10 +24,22 @@ public class FormatHandler {
         String plainReqBody = scanner.hasNext() ? scanner.next() : "";
         scanner.close();
 
-        FormatRequest parsedReq = new Gson().fromJson(plainReqBody, FormatRequest.class);
-
         try {
+            FormatRequest parsedReq;
+            try {
+                parsedReq = new Gson().fromJson(plainReqBody, FormatRequest.class);
+            } catch (Throwable e) {
+                throw new IllegalArgumentException("\"source\" and \"params\" should be JSON objects", e);
+            }
+
+            if (parsedReq.getSource() == null)
+                throw new IllegalArgumentException("\"source\" is not specified");
+
+            if (parsedReq.getParams() == null)
+                throw new IllegalArgumentException("\"params\" are not specified");
+
             String result = JsonFormatter.format(parsedReq.getSource().toString(), parsedReq.getParams());
+
             byte[] resultBytes = result.getBytes();
             exchange.sendResponseHeaders(200, resultBytes.length);
             resBody.write(resultBytes);
@@ -38,7 +50,7 @@ public class FormatHandler {
         } catch (Throwable e) {
             // TODO: log
 
-            byte[] errorBytes = "Unexpected server error. Please, contact the support.".getBytes();
+            byte[] errorBytes = "Unexpected error. Please, contact the support".getBytes();
             exchange.sendResponseHeaders(500, errorBytes.length);
             resBody.write(errorBytes);
         }

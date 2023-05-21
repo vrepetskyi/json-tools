@@ -40,11 +40,11 @@ Software Engineering final team project implementing an _API_ and _JavaFX_ inter
 <table>
     <tr>
         <td>Port</td>
-        <td><em>8080</em></td>
+        <td>8080</td>
     </tr>
     <tr>
         <td>Method</td>
-        <td><em>POST</em></td>
+        <td>POST</td>
     </tr>
 </table>
 
@@ -54,10 +54,10 @@ Request:
 
 ```json
 {
-    "source": { ... },
+    "source": { "object" },
     "params": {
         "filter": {
-            "keys": [...],
+            "keys": ["array"],
             "exclude": true
         },
         "prettify": true
@@ -84,8 +84,8 @@ Request:
 
 ```json
 {
-    "s1": { ... },
-    "s2": { ... }
+    "s1": { "object" },
+    "s2": { "object" }
 }
 ```
 

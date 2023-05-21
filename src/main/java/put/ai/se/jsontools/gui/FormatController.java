@@ -14,9 +14,9 @@ import java.util.LinkedHashSet;
 
 public class FormatController {
     @FXML
-    TextArea input;
+    TextArea source;
     @FXML
-    TextArea output;
+    TextArea result;
 
     @FXML
     public void initialize() {
@@ -25,20 +25,19 @@ public class FormatController {
 
     @FXML
     public void format() {
-        output.setText("");
-        String source = input.getText();
+        result.setText("");
 
         JsonFormatParamsBuilder params = new JsonFormatParamsBuilder();
 
         // TODO: further params are for testing only
         params.setStyleMode(JsonStyleMode.Prettify);
         // params.setStyleMode(JsonStyleMode.Minify);
-        params.setFilterMode(JsonFilterMode.Include);
+        // params.setFilterMode(JsonFilterMode.Include);
         // params.setFilterMode(JsonFilterMode.Exclude);
-        params.setFilterKeys(new LinkedHashSet<>(Arrays.asList("1")));
+        // params.setFilterKeys(new LinkedHashSet<>(Arrays.asList("source")));
 
         try {
-            output.setText(JsonFormatter.format(source, params));
+            result.setText(JsonFormatter.format(source.getText(), params));
         } catch (IllegalArgumentException e) {
             Alert errorAlert = new Alert(Alert.AlertType.ERROR);
             errorAlert.setHeaderText("Formatting error");

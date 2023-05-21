@@ -16,7 +16,7 @@ public class JsonString implements JsonFormattable {
                 reader.hasNext();
                 return true;
             }
-        } catch (Throwable throwable) {
+        } catch (Exception e) {
             return false;
         }
     }

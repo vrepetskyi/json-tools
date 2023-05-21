@@ -1,21 +1,14 @@
 package put.ai.se.jsontools.core;
 
-import java.util.LinkedHashSet;
-
 public class JsonFormatParams {
-    protected JsonStyleMode styleMode;
-    protected JsonFilterMode filterMode;
-    protected LinkedHashSet<String> filterKeys;
+    protected JsonFilterParams filter;
+    protected boolean prettify;
 
-    public JsonStyleMode getStyleMode() {
-        return styleMode;
+    public boolean getPrettify() {
+        return prettify;
     }
 
-    public JsonFilterMode getFilterMode() {
-        return filterMode;
-    }
-
-    public LinkedHashSet<String> getFilterKeys() {
-        return filterKeys;
+    public JsonFilterParams getFilter() {
+        return filter;
     }
 }

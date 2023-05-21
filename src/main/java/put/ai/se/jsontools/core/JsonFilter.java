@@ -17,16 +17,20 @@ public class JsonFilter extends JsonFormattableDecorator {
     public String getValue(JsonFormatParams params) {
         String value = super.getValue(params);
 
+        JsonFilterParams filter = params.getFilter();
+        if (filter == null || filter.getMode() == null)
+            return value;
+
         Gson gson = new Gson();
         JsonElement jsonElement = gson.fromJson(value, JsonElement.class);
         JsonElement clone = JsonParser.parseString(jsonElement.toString());
 
-        LinkedHashSet<String> filterKeys = params.getFilterKeys();
+        LinkedHashSet<String> filterKeys = filter.getKeys();
         if (filterKeys == null) {
             filterKeys = new LinkedHashSet<>();
         }
 
-        switch (params.getFilterMode()) {
+        switch (filter.getMode()) {
             case Include:
                 Set<String> keys = new HashSet<>(clone.getAsJsonObject().keySet());
                 for (String entry : keys) {

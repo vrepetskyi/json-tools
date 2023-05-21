@@ -7,14 +7,6 @@ public class JsonCommand {
     private JsonObject source;
     private Options options;
 
-    public JsonObject getSource() {
-        return source;
-    }
-
-    public Options getOptions() {
-        return options;
-    }
-
     public String processData() {
         JsonString jsonString = new JsonString(source.toString());
         JsonFormatParamsBuilder params = new JsonFormatParamsBuilder();

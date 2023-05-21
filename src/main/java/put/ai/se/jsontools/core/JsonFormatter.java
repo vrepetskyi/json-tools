@@ -14,13 +14,15 @@ public class JsonFormatter {
             result = new JsonFilter(result);
         }
 
-        switch (params.getStyleMode()) {
-            case Minify:
-                result = new JsonMinifier(result);
-                break;
-            case Prettify:
-                result = new JsonPrettifier(result);
-                break;
+        if (params.getStyleMode() != null) {
+            switch (params.getStyleMode()) {
+                case Minify:
+                    result = new JsonMinifier(result);
+                    break;
+                case Prettify:
+                    result = new JsonPrettifier(result);
+                    break;
+            }
         }
 
         return result.getValue(params);

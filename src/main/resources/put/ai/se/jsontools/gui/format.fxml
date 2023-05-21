@@ -15,14 +15,14 @@
             <children>
                 <VBox>
                     <children>
-                        <Label text="Input" />
-                        <TextArea fx:id="input" maxWidth="240" layoutX="20.0" layoutY="28.0" />
+                        <Label text="Source" />
+                        <TextArea fx:id="source" maxWidth="240" layoutX="20.0" layoutY="28.0" />
                     </children>
                 </VBox>
                 <VBox>
                     <children>
-                        <Label text="Output" />
-                        <TextArea fx:id="output" maxWidth="240" layoutX="280.0" layoutY="28.0" />
+                        <Label text="Result" />
+                        <TextArea fx:id="result" maxWidth="240" layoutX="280.0" layoutY="28.0" />
                     </children>
                 </VBox>
             </children>

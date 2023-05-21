@@ -1,17 +1,15 @@
 package put.ai.se.jsontools.api;
 
-import java.io.*;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
 import java.util.Scanner;
 
-import com.google.gson.Gson;
-import com.google.gson.JsonElement;
-import com.google.gson.JsonObject;
-import com.google.gson.JsonParser;
 import com.sun.net.httpserver.HttpExchange;
 
-public class Handler {
+public class FormatHandler {
     public static void handle(HttpExchange exchange) throws IOException {
-        if ("GET".equals(exchange.getRequestMethod())) {
+        if ("POST".equals(exchange.getRequestMethod())) {
             String respText = "Invalid JSON";
             InputStream input = exchange.getRequestBody();
             OutputStream output = exchange.getResponseBody();

@@ -1,6 +1,6 @@
 package put.ai.se.jsontools.api;
 
-import com.google.gson.*;
+import com.google.gson.Gson;
 
 public class Parser {
     public static JsonCommand parse(String json) {

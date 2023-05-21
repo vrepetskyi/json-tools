@@ -4,6 +4,12 @@ import java.util.LinkedHashSet;
 
 public class DiffFinder {
     public static LinkedHashSet<Integer> getLineNumbers(String s1, String s2) {
+        if (s1 == null)
+            s1 = "";
+
+        if (s2 == null)
+            s2 = "";
+
         String[] lines1 = s1.split("\\r?\\n");
         String[] lines2 = s2.split("\\r?\\n");
 

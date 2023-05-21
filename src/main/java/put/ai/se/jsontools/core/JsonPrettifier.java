@@ -12,7 +12,7 @@ public class JsonPrettifier extends JsonFormattableDecorator {
         String value = super.getValue(params);
         Gson gson = new GsonBuilder().setPrettyPrinting().create();
         JsonElement je = JsonParser.parseString(value);
-        String prettyJsonString = gson.toJson(je);
-        return prettyJsonString;
+        String outputString = gson.toJson(je);
+        return outputString;
     }
 }

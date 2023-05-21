@@ -5,6 +5,11 @@ import javafx.fxml.FXML;
 
 public class MenuController {
     @FXML
+    public void initialize() {
+        GuiController.setTitle("JSON tools");
+    }
+
+    @FXML
     private void format() throws IOException {
         GuiController.setRoot("format");
     }

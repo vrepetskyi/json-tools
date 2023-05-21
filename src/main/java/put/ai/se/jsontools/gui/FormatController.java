@@ -19,6 +19,11 @@ public class FormatController {
     TextArea output;
 
     @FXML
+    public void initialize() {
+        GuiController.setTitle("JSON tools - format");
+    }
+
+    @FXML
     public void format() {
         output.setText("");
         String source = input.getText();

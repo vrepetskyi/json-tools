@@ -14,6 +14,11 @@ public class CompareController {
     TextArea s2;
 
     @FXML
+    public void initialize() {
+        GuiController.setTitle("JSON tools - compare lines");
+    }
+
+    @FXML
     private void compare() throws IOException {
         LinkedHashSet<Integer> diffs = DiffFinder.getLineNumbers(s1.getText(), s2.getText());
 

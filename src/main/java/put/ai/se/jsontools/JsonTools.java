@@ -7,13 +7,13 @@ public class JsonTools {
     public static void main(String[] args) {
         try {
             new Thread(new ApiController()).start();
-        } catch (Exception e) {
+        } catch (Throwable e) {
             // TODO: log api start error
         }
 
         try {
             new Thread(new GuiController()).start();
-        } catch (Exception e) {
+        } catch (Throwable e) {
             // TODO: log gui start error
         }
     }

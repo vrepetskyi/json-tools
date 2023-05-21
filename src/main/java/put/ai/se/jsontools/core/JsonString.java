@@ -1,6 +1,5 @@
 package put.ai.se.jsontools.core;
 
-import java.io.IOException;
 import java.io.StringReader;
 
 import com.google.gson.Gson;
@@ -17,7 +16,7 @@ public class JsonString implements JsonFormattable {
                 reader.hasNext();
                 return true;
             }
-        } catch (IOException e) {
+        } catch (Throwable throwable) {
             return false;
         }
     }

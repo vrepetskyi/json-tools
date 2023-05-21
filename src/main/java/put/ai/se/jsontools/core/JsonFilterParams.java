@@ -3,14 +3,14 @@ package put.ai.se.jsontools.core;
 import java.util.LinkedHashSet;
 
 public class JsonFilterParams {
-    protected JsonFilterMode mode;
     protected LinkedHashSet<String> keys;
-
-    public JsonFilterMode getMode() {
-        return mode;
-    }
+    protected boolean exclude;
 
     public LinkedHashSet<String> getKeys() {
         return keys;
+    }
+
+    public boolean getExclude() {
+        return exclude;
     }
 }

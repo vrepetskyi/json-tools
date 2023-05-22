@@ -110,7 +110,7 @@
                     <execution>
                         <id>default-cli</id>
                         <configuration>
-                            <mainClass>put.ai.se.jsontools/put.ai.se.jsontools.App</mainClass>
+                            <mainClass>put.ai.se.jsontools/put.ai.se.jsontools.JsonTools</mainClass>
                         </configuration>
                     </execution>
                 </executions>

@@ -1,22 +1,18 @@
-name: Deploy
+name: Release
 
 on:
   push:
     tags:
-      - "v[0-9]+.[0-9]+.[0-9]+"
-  workflow_dispatch:
+      - "v*"
 
-permissions:
-  contents: read
-  pages: write
-  id-token: write
+permissions: write-all
 
 concurrency:
   group: "pages"
   cancel-in-progress: false
 
 jobs:
-  deploy:
+  release:
     environment:
       name: github-pages
       url: ${{ steps.deployment.outputs.page_url }}
@@ -27,7 +23,7 @@ jobs:
         with:
           java-version: "17"
           distribution: "temurin"
-      - run: mvn --batch-mode --update-snapshots verify
+      - run: mvn -q -B -U verify
       - run: cp docs/uml.png target/site/apidocs
       - uses: montudor/action-zip@v1
       - working-directory: target
@@ -37,3 +33,19 @@ jobs:
         with:
           path: target/site/apidocs
       - uses: actions/deploy-pages@v2
+      - uses: actions/create-release@v1
+        id: create-release
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          tag_name: ${{ github.ref }}
+          draft: true
+          prerelease: false
+      - uses: actions/upload-release-asset@v1
+        env:
+          GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        with:
+          upload_url: ${{ steps.create-release.outputs.upload_url }}
+          asset_path: target/site/apidocs/json-tools.zip
+          asset_name: json-tools.zip
+          asset_content_type: application/zip

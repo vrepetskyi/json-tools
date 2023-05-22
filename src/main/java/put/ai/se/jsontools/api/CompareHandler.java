@@ -8,11 +8,15 @@ import java.util.Scanner;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import put.ai.se.jsontools.core.DiffFinder;
 
 public class CompareHandler {
+    private static final Logger logger = LoggerFactory.getLogger(ApiController.class);
     public static void handle(HttpExchange exchange) throws IOException {
         if (!"POST".equals(exchange.getRequestMethod())) {
+            logger.warn("Invalid request method: {}", exchange.getRequestMethod());
             exchange.sendResponseHeaders(405, -1);
             return;
         }
@@ -32,7 +36,7 @@ public class CompareHandler {
             exchange.sendResponseHeaders(200, resultBytes.length);
             resBody.write(resultBytes);
         } catch (Throwable e) {
-            // TODO: log
+            logger.error("Unexpected server error occurred", e);
 
             byte[] errorBytes = "Unexpected server error. Please, contact the support".getBytes();
             exchange.sendResponseHeaders(500, errorBytes.length);

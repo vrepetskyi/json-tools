@@ -10,9 +10,15 @@ import com.sun.net.httpserver.HttpExchange;
 
 import put.ai.se.jsontools.core.JsonFormatter;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class FormatHandler {
+    private static final Logger logger = LoggerFactory.getLogger(FormatHandler.class);
+
     public static void handle(HttpExchange exchange) throws IOException {
         if (!"POST".equals(exchange.getRequestMethod())) {
+            logger.warn("Invalid request method: {}", exchange.getRequestMethod());
             exchange.sendResponseHeaders(405, -1);
             return;
         }
@@ -44,11 +50,13 @@ public class FormatHandler {
             exchange.sendResponseHeaders(200, resultBytes.length);
             resBody.write(resultBytes);
         } catch (IllegalArgumentException e) {
+            logger.warn("Invalid request: {}", e.getMessage());
+
             byte[] errorBytes = e.getMessage().getBytes();
             exchange.sendResponseHeaders(400, errorBytes.length);
             resBody.write(errorBytes);
         } catch (Throwable e) {
-            // TODO: log
+            logger.error("Unexpected error occurred", e);
 
             byte[] errorBytes = "Unexpected error. Please, contact the support".getBytes();
             exchange.sendResponseHeaders(500, errorBytes.length);

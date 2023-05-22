@@ -5,7 +5,12 @@ import java.net.InetSocketAddress;
 
 import com.sun.net.httpserver.HttpServer;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class ApiController implements Runnable {
+    private static final Logger logger = LoggerFactory.getLogger(ApiController.class);
+
     @Override
     public void run() {
         try {
@@ -15,7 +20,7 @@ public class ApiController implements Runnable {
             server.setExecutor(null);
             server.start();
         } catch (IOException e) {
-            // TODO: log error
+            logger.error("Error occurred while starting the server", e);
         }
     }
 }

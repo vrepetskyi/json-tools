@@ -10,19 +10,46 @@ import com.sun.net.httpserver.HttpExchange;
 
 import put.ai.se.jsontools.core.JsonFormatter;
 
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
+
 public class FormatHandler {
+    private static final Logger logger = LoggerFactory.getLogger(FormatHandler.class);
+
+    private static void sendResponse(HttpExchange exchange, int resCode, String plainResBody, String ip)
+            throws IOException {
+        OutputStream resBody = exchange.getResponseBody();
+
+        byte[] resBodyBytes = plainResBody.getBytes();
+        exchange.sendResponseHeaders(resCode, resBodyBytes.length);
+        resBody.write(resBodyBytes);
+        resBody.flush();
+        exchange.close();
+
+        logger.info("{} /api/format response {}\n{}", ip, resCode, plainResBody);
+    }
+
     public static void handle(HttpExchange exchange) throws IOException {
-        if (!"POST".equals(exchange.getRequestMethod())) {
-            exchange.sendResponseHeaders(405, -1);
-            return;
+        String ip = exchange.getRequestHeaders().getFirst("X-FORWARDED-FOR");
+        if (ip == null) {
+            ip = exchange.getRemoteAddress().toString();
         }
 
         InputStream reqBody = exchange.getRequestBody();
-        OutputStream resBody = exchange.getResponseBody();
 
         Scanner scanner = new Scanner(reqBody).useDelimiter("\\A");
         String plainReqBody = scanner.hasNext() ? scanner.next() : "";
         scanner.close();
+
+        logger.info("{} /api/format request {}\n{}", ip, exchange.getRequestMethod(), plainReqBody);
+
+        if (!"POST".equals(exchange.getRequestMethod())) {
+            sendResponse(exchange, 405, "Invalid request method", ip);
+            return;
+        }
+
+        String plainResBody;
+        int resCode;
 
         try {
             FormatRequest parsedReq;
@@ -38,24 +65,18 @@ public class FormatHandler {
             if (parsedReq.getParams() == null)
                 throw new IllegalArgumentException("\"params\" are not specified");
 
-            String result = JsonFormatter.format(parsedReq.getSource().toString(), parsedReq.getParams());
-
-            byte[] resultBytes = result.getBytes();
-            exchange.sendResponseHeaders(200, resultBytes.length);
-            resBody.write(resultBytes);
+            resCode = 200;
+            plainResBody = JsonFormatter.format(parsedReq.getSource().toString(), parsedReq.getParams());
         } catch (IllegalArgumentException e) {
-            byte[] errorBytes = e.getMessage().getBytes();
-            exchange.sendResponseHeaders(400, errorBytes.length);
-            resBody.write(errorBytes);
+            resCode = 400;
+            plainResBody = e.getMessage();
         } catch (Throwable e) {
-            // TODO: log
+            logger.error("{} /api/format error\n{}", ip, e);
 
-            byte[] errorBytes = "Unexpected error. Please, contact the support".getBytes();
-            exchange.sendResponseHeaders(500, errorBytes.length);
-            resBody.write(errorBytes);
+            resCode = 500;
+            plainResBody = "Unexpected error. Please, contact the support";
         }
 
-        resBody.flush();
-        exchange.close();
+        sendResponse(exchange, resCode, plainResBody, ip);
     }
 }

@@ -6,7 +6,6 @@ import java.util.LinkedHashSet;
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
 import put.ai.se.jsontools.core.compare.CompareArguments;
-import put.ai.se.jsontools.core.compare.CompareBuilder;
 import put.ai.se.jsontools.core.compare.StringComparer;
 
 public class CompareController {

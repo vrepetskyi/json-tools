@@ -1,9 +1,12 @@
-package put.ai.se.jsontools.core;
+package put.ai.se.jsontools.core.compare;
 
 import java.util.LinkedHashSet;
 
-public class DiffFinder {
-    public static LinkedHashSet<Integer> getLineNumbers(String s1, String s2) {
+public class StringComparer {
+    public static LinkedHashSet<Integer> getLineNumbers(CompareArguments arguments) {
+        String s1 = arguments.getString1();
+        String s2 = arguments.getString2();
+
         if (s1 == null)
             s1 = "";
 

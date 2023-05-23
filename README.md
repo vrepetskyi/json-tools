@@ -78,7 +78,7 @@ Response:
     </tr>
 </table>
 
-#### /api/compare
+#### /api/compare-lines
 
 Request:
 

@@ -11,19 +11,36 @@
     xmlns:fx="http://javafx.com/fxml/1"
     fx:controller="put.ai.se.jsontools.gui.CompareController">
     <children>
-        <HBox spacing="70">
+        <HBox>
             <children>
-                <!-- TODO: bar with diff marks (*) -->
                 <VBox>
+                    <HBox spacing="30" alignment="CENTER">
+                        <RadioButton text="Show equal lines" fx:id="EqualityCheck" />
+                        <RadioButton text="Show different lines" fx:id="DifferenceCheck" />
+                    </HBox>
+                    <HBox spacing="30">
+                        <VBox>
+                            <children>
+                                <Label text="String 1" />
+                                <TextArea fx:id="s1" maxWidth="240" layoutX="20.0" layoutY="28.0" />
+                            </children>
+                        </VBox>
+                        <VBox>
+                            <children>
+                                <Label text=" " />
+                                <TextArea fx:id="resultMarks" maxWidth="10" />
+                            </children>
+                        </VBox>
+                        <VBox>
+                            <children>
+                                <Label text="String 2" />
+                                <TextArea fx:id="s2" maxWidth="240" layoutX="280.0" layoutY="28.0" />
+                            </children>
+                        </VBox>
+                    </HBox>
                     <children>
-                        <Label text="String 1" />
-                        <TextArea fx:id="s1" maxWidth="240" layoutX="20.0" layoutY="28.0" />
-                    </children>
-                </VBox>
-                <VBox>
-                    <children>
-                        <Label text="String 2" />
-                        <TextArea fx:id="s2" maxWidth="240" layoutX="280.0" layoutY="28.0" />
+                        <Label fx:id="resultLabel"/>
+                        <TextArea fx:id="resultOutput" maxHeight="20" />
                     </children>
                 </VBox>
             </children>
@@ -31,7 +48,7 @@
                 <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
             </padding>
         </HBox>
-        <!-- TODO: output different lines -->
+
         <Button text="Compare" onAction="#compare" />
         <Button text="Back" onAction="#back" />
     </children>

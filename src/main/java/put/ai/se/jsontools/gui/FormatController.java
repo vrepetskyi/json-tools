@@ -1,14 +1,18 @@
 package put.ai.se.jsontools.gui;
 
-import javafx.fxml.FXML;
-import javafx.scene.control.*;
-import put.ai.se.jsontools.core.JsonFormatParamsBuilder;
-import put.ai.se.jsontools.core.JsonFormatter;
-
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
 import java.util.List;
+
+import javafx.fxml.FXML;
+import javafx.scene.control.Alert;
+import javafx.scene.control.RadioButton;
+import javafx.scene.control.TextArea;
+import javafx.scene.control.TextField;
+import javafx.scene.control.ToggleGroup;
+import put.ai.se.jsontools.core.JsonFormatParamsBuilder;
+import put.ai.se.jsontools.core.JsonFormatter;
 
 public class FormatController {
     @FXML
@@ -39,37 +43,17 @@ public class FormatController {
     public void format() {
         result.setText("");
 
-        JsonFormatParamsBuilder params = new JsonFormatParamsBuilder();
-
-        if (prettify.isSelected()) {
-            params.setPrettify(true);
-        }
-        if (minify.isSelected()) {
-            params.setPrettify(false);
-        }
-
-        if (exclude.isSelected()) {
-            params.setExclude(true);
-            System.out.println(true);
-        }
-        if (include.isSelected()) {
-            params.setExclude(false);
-            System.out.println(false);
-        }
-
         List<String> separated = Arrays.asList(keysTextField.getText().split("\\s*,\\s*"));
         LinkedHashSet<String> keys = new LinkedHashSet<>(separated);
+
+        JsonFormatParamsBuilder params = new JsonFormatParamsBuilder();
+
         params.setFilterKeys(keys);
+        params.setExclude(exclude.isSelected());
+        params.setPrettify(prettify.isSelected());
 
         try {
-            if (params.getFilter() == null) {
-                Alert warningAlert = new Alert(Alert.AlertType.WARNING);
-                warningAlert.setHeaderText("You need to choose the key first.");
-                warningAlert.setContentText("Choose the key in the list on the right.");
-                warningAlert.showAndWait();
-            } else {
-                result.setText(JsonFormatter.format(source.getText(), params));
-            }
+            result.setText(JsonFormatter.format(source.getText(), params));
         } catch (IllegalArgumentException e) {
             Alert errorAlert = new Alert(Alert.AlertType.ERROR);
             errorAlert.setHeaderText("Formatting error");
@@ -77,8 +61,6 @@ public class FormatController {
             errorAlert.showAndWait();
         }
     }
-
-
 
     @FXML
     private void back() throws IOException {

@@ -30,7 +30,47 @@
                 <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
             </padding>
         </HBox>
-        <!-- TODO: format options -->
+
+        <HBox>
+            <fx:define>
+                <ToggleGroup fx:id="groupPrettify" />
+            </fx:define>
+
+            <RadioButton fx:id="minify" text="Minify" toggleGroup="$groupPrettify" selected="true">
+                <HBox.margin>
+                    <Insets left="5.0" />
+                </HBox.margin>
+            </RadioButton>
+
+            <RadioButton fx:id="prettify" text="Prettify" toggleGroup="$groupPrettify">
+                <HBox.margin>
+                    <Insets left="20.0" />
+                </HBox.margin>
+            </RadioButton>
+
+            <fx:define>
+                <ToggleGroup fx:id="groupExclude" />
+            </fx:define>
+
+            <RadioButton fx:id="exclude" text="Exclude" toggleGroup="$groupExclude" selected="true">
+                <HBox.margin>
+                    <Insets left="80.0" />
+                </HBox.margin>
+            </RadioButton>
+
+            <RadioButton fx:id="include" text="Include" toggleGroup="$groupExclude">
+                <HBox.margin>
+                    <Insets left="5.0" />
+                </HBox.margin>
+            </RadioButton>
+
+            <TextField fx:id="keysTextField" prefWidth="250"
+                promptText="Enter here your keys separating them with a comma">
+                <HBox.margin>
+                    <Insets left="80.0" />
+                </HBox.margin>
+            </TextField>
+        </HBox>
         <Button text="Format" onAction="#format" />
         <Button text="Back" onAction="#back" />
     </children>

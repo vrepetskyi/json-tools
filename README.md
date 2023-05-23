@@ -84,8 +84,9 @@ Request:
 
 ```json
 {
-    "s1": { "object" },
-    "s2": { "object" }
+    "string1": { "object" },
+    "string2": { "object" },
+    "returnIdentical": true
 }
 ```
 
@@ -98,6 +99,6 @@ Response:
     </tr>
     <tr>
         <td>Body</td>
-        <td>numbers of different lines as a JSON array or an error message</td>
+        <td>numbers of different/identical lines as a JSON array or an error message</td>
     </tr>
 </table>

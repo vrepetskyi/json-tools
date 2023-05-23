@@ -43,12 +43,18 @@ Software Engineering final team project implementing an _API_ and _JavaFX_ inter
         <td>8080</td>
     </tr>
     <tr>
-        <td>Method</td>
+        <td>Request method</td>
         <td>POST</td>
+    </tr>
+    <tr>
+        <td>Response codes</td>
+        <td>200, 400, 405, 500</td>
     </tr>
 </table>
 
-#### /api/format
+#### Body
+
+##### /api/format
 
 Request:
 
@@ -65,20 +71,9 @@ Request:
 }
 ```
 
-Response:
+Response: the resulting JSON or an error message.
 
-<table>
-    <tr>
-        <td>Codes</td>
-        <td>200, 400, 405, 500</td>
-    </tr>
-    <tr>
-        <td>Body</td>
-        <td>the resulting JSON or an error message</td>
-    </tr>
-</table>
-
-#### /api/compare-lines
+##### /api/compare-lines
 
 Request:
 
@@ -90,15 +85,4 @@ Request:
 }
 ```
 
-Response:
-
-<table>
-    <tr>
-        <td>Codes</td>
-        <td>200, 405, 500</td>
-    </tr>
-    <tr>
-        <td>Body</td>
-        <td>numbers of different/identical lines as a JSON array or an error message</td>
-    </tr>
-</table>
+Response: numbers of different/identical lines as a JSON array or an error message.

@@ -57,9 +57,11 @@ public class CompareHandler {
         try {
             resCode = 200;
             plainResBody = StringComparer.getLineNumbers(parsedReq).toString();
+        } catch (IllegalArgumentException e) {
+            resCode = 400;
+            plainResBody = e.getMessage();
         } catch (Throwable e) {
             logger.error("{} /api/compare-lines error\n{}", ip, e);
-
             resCode = 500;
             plainResBody = "Unexpected error. Please, contact the support";
         }

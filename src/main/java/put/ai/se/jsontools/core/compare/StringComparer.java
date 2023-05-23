@@ -17,7 +17,9 @@ public class StringComparer {
         int lineNumber = Math.max(l1.length, l2.length);
 
         IntStream allLines = IntStream.range(0, lineNumber);
+
         LinkedHashSet<Integer> result = new LinkedHashSet<>();
+
         allLines.forEach(i -> {
             if (l1[i].equals(l2[i])) {
                 if (arguments.isReturnIdentical()) {

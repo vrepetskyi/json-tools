@@ -5,6 +5,7 @@ import java.util.LinkedHashSet;
 public class JsonFormatParamsBuilder extends JsonFormatParams {
     public JsonFormatParamsBuilder() {
         super();
+        super.filter = new JsonFilterParams();
     }
 
     public void setFilterKeys(LinkedHashSet<String> value) {

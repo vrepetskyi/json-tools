@@ -5,7 +5,8 @@ import java.util.LinkedHashSet;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.TextArea;
-import put.ai.se.jsontools.core.DiffFinder;
+import put.ai.se.jsontools.core.compare.CompareArguments;
+import put.ai.se.jsontools.core.compare.StringComparer;
 
 public class CompareController {
     @FXML
@@ -20,7 +21,12 @@ public class CompareController {
 
     @FXML
     private void compare() throws IOException {
-        LinkedHashSet<Integer> diffs = DiffFinder.getLineNumbers(s1.getText(), s2.getText());
+        CompareArguments args = new CompareArguments();
+
+        args.setString1(s1.getText());
+        args.setString2(s2.getText());
+
+        LinkedHashSet<Integer> diffs = StringComparer.getLineNumbers(args);
 
         System.out.println(diffs);
     }

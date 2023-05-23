@@ -8,9 +8,11 @@ import java.util.Scanner;
 import com.google.gson.Gson;
 import com.sun.net.httpserver.HttpExchange;
 
+import put.ai.se.jsontools.core.compare.CompareArguments;
+import put.ai.se.jsontools.core.compare.StringComparer;
+
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import put.ai.se.jsontools.core.DiffFinder;
 
 public class CompareHandler {
     private static final Logger logger = LoggerFactory.getLogger(ApiController.class);
@@ -25,7 +27,7 @@ public class CompareHandler {
         resBody.flush();
         exchange.close();
 
-        logger.info("{} /api/compare response {}\n{}", ip, resCode, plainResBody);
+        logger.info("{} /api/compare-lines response {}\n{}", ip, resCode, plainResBody);
     }
 
     public static void handle(HttpExchange exchange) throws IOException {
@@ -40,24 +42,26 @@ public class CompareHandler {
         String plainReqBody = scanner.hasNext() ? scanner.next() : "";
         scanner.close();
 
-        logger.info("{} /api/compare request {}\n{}", ip, exchange.getRequestMethod(), plainReqBody);
+        logger.info("{} /api/compare-lines request {}\n{}", ip, exchange.getRequestMethod(), plainReqBody);
 
         if (!"POST".equals(exchange.getRequestMethod())) {
             sendResponse(exchange, 405, "Invalid request method", ip);
             return;
         }
 
-        CompareRequest parsedReq = new Gson().fromJson(plainReqBody, CompareRequest.class);
+        CompareArguments parsedReq = new Gson().fromJson(plainReqBody, CompareArguments.class);
 
         String plainResBody;
         int resCode;
 
         try {
             resCode = 200;
-            plainResBody = DiffFinder.getLineNumbers(parsedReq.getS1(), parsedReq.getS2()).toString();
+            plainResBody = StringComparer.getLineNumbers(parsedReq).toString();
+        } catch (IllegalArgumentException e) {
+            resCode = 400;
+            plainResBody = e.getMessage();
         } catch (Throwable e) {
-            logger.error("{} /api/compare error\n{}", ip, e);
-
+            logger.error("{} /api/compare-lines error\n{}", ip, e);
             resCode = 500;
             plainResBody = "Unexpected error. Please, contact the support";
         }

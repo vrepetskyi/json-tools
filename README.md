@@ -43,12 +43,20 @@ Software Engineering final team project implementing an _API_ and _JavaFX_ inter
         <td>8080</td>
     </tr>
     <tr>
-        <td>Method</td>
+        <td>Request method</td>
         <td>POST</td>
+    </tr>
+    <tr>
+        <td>Response codes</td>
+        <td>200, 400, 405, 500</td>
     </tr>
 </table>
 
-#### /api/format
+For non-200 response codes, all the endpoints return an error message.
+
+#### Body
+
+##### /api/format
 
 Request:
 
@@ -65,39 +73,18 @@ Request:
 }
 ```
 
-Response:
+Response: the resulting JSON.
 
-<table>
-    <tr>
-        <td>Codes</td>
-        <td>200, 400, 405, 500</td>
-    </tr>
-    <tr>
-        <td>Body</td>
-        <td>the resulting JSON or an error message</td>
-    </tr>
-</table>
-
-#### /api/compare
+##### /api/compare-lines
 
 Request:
 
 ```json
 {
-    "s1": { "object" },
-    "s2": { "object" }
+  "string1": "string",
+  "string2": "string",
+  "returnIdentical": true
 }
 ```
 
-Response:
-
-<table>
-    <tr>
-        <td>Codes</td>
-        <td>200, 405, 500</td>
-    </tr>
-    <tr>
-        <td>Body</td>
-        <td>numbers of different lines as a JSON array or an error message</td>
-    </tr>
-</table>
+Response: numbers of different/identical lines as a JSON array.

@@ -23,11 +23,11 @@ public class StringComparer {
 
         allLines.forEach(i -> {
             if (i < minLines && l1[i].equals(l2[i])) {
-                if (arguments.isReturnIdentical()) {
+                if (arguments.isReturnIdenticalNumbers()) {
                     result.add(i + 1);
                 }
             } else {
-                if (!arguments.isReturnIdentical()) {
+                if (!arguments.isReturnIdenticalNumbers()) {
                     result.add(i + 1);
                 }
             }

@@ -32,7 +32,7 @@ public class CompareController {
 
         arguments.setString1(s1.getText());
         arguments.setString2(s2.getText());
-        arguments.setReturnIdentical(identical.isSelected());
+        arguments.setReturnIdenticalNumbers(identical.isSelected());
 
         LinkedHashSet<Integer> diffs = StringComparer.getLineNumbers(arguments);
 

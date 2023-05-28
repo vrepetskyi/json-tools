@@ -3,7 +3,7 @@ package put.ai.se.jsontools.core.compare;
 public class CompareArguments {
     private String string1;
     private String string2;
-    private boolean returnIdentical;
+    private boolean returnIdenticalNumbers;
 
     public String getString1() {
         return string1;
@@ -21,12 +21,12 @@ public class CompareArguments {
         this.string2 = string2;
     }
 
-    public boolean isReturnIdentical() {
-        return returnIdentical;
+    public boolean isReturnIdenticalNumbers() {
+        return returnIdenticalNumbers;
     }
 
-    public void setReturnIdentical(boolean returnIdentical) {
-        this.returnIdentical = returnIdentical;
+    public void setReturnIdenticalNumbers(boolean returnIdentical) {
+        this.returnIdenticalNumbers = returnIdentical;
     }
 
 }

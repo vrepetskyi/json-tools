@@ -7,6 +7,7 @@ import java.util.LinkedHashSet;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import put.ai.se.jsontools.core.format.FilterArguments;
 import put.ai.se.jsontools.core.format.FormatArguments;
 import put.ai.se.jsontools.core.format.FormatDirector;
 
@@ -114,14 +115,16 @@ public class JsonFormatterTest {
         set.add("name");
         set.add("job");
 
-        FormatArguments filterArguments = new FormatArguments();
-        filterArguments.setPrettify(false);
-        filterArguments.getFilter().setExclude(false);
-        filterArguments.getFilter().setKeys(set);
+        FormatArguments arguments = new FormatArguments();
+        FilterArguments filterArguments = new FilterArguments();
+        arguments.setFilter(filterArguments);
+        arguments.setPrettify(false);
+        filterArguments.setExclude(false);
+        filterArguments.setKeys(set);
 
         String expected = "{\"name\":\"Kowalski\",\"job\":\"Engineer\"}";
         String source = "{\"name\":\"Kowalski\",\"age\":23,\"job\":\"Engineer\"}";
-        String actual = FormatDirector.formatJson(source, filterArguments);
+        String actual = FormatDirector.formatJson(source, arguments);
 
         assertEquals(expected, actual);
     }

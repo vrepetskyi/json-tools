@@ -6,19 +6,20 @@ import java.util.LinkedHashSet;
 import javafx.fxml.FXML;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.ToggleGroup;
 import put.ai.se.jsontools.core.compare.CompareArguments;
 import put.ai.se.jsontools.core.compare.StringComparer;
 
 public class CompareController {
     @FXML
-    TextArea s1, s2, resultOutput, resultMarks;
+    TextArea s1;
+    @FXML
+    TextArea s2;
     @FXML
     RadioButton identical;
     @FXML
-    RadioButton different;
+    TextArea resultOutput;
     @FXML
-    ToggleGroup compareMode;
+    TextArea resultMarks;
 
     @FXML
     public void initialize() {

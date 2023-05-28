@@ -41,12 +41,12 @@
       </VBox>
       <HBox GridPane.rowIndex="3" GridPane.columnSpan="3" alignment="CENTER" spacing="16">
          <children>
-            <RadioButton fx:id="different" text="Return different" selected="true">
+            <RadioButton fx:id="different" text="Find different" selected="true">
                <toggleGroup>
                   <ToggleGroup fx:id="compareMode" />
                </toggleGroup>
             </RadioButton>
-            <RadioButton fx:id="identical" text="Return identical" toggleGroup="$compareMode">
+            <RadioButton fx:id="identical" text="Find identical" toggleGroup="$compareMode">
             </RadioButton>
             <Button mnemonicParsing="false" text="Back" onAction="#back" />
             <Button mnemonicParsing="false" text="Compare" onAction="#compare" />

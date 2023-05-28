@@ -1,4 +1,4 @@
-package put.ai.se.jsontools.core;
+package put.ai.se.jsontools.core.format;
 
 import static org.junit.Assert.assertEquals;
 
@@ -7,12 +7,7 @@ import java.util.LinkedHashSet;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
-import put.ai.se.jsontools.core.format.FilterArguments;
-import put.ai.se.jsontools.core.format.FormatArguments;
-import put.ai.se.jsontools.core.format.FormatDirector;
-
-public class JsonFormatterTest {
-
+public class FormatDirectorTest {
     @Test
     void format_Default_Arguments() {
         String expected = "{\"name\":\"John\",\"age\":30,\"city\":\"New York\",\"country\":\"USA\",\"attributes\":{\"height\":180,\"weight\":75}}";

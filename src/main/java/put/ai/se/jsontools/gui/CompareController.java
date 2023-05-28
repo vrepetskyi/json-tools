@@ -2,7 +2,6 @@ package put.ai.se.jsontools.gui;
 
 import java.io.IOException;
 import java.util.LinkedHashSet;
-import java.util.stream.IntStream;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Label;
@@ -16,16 +15,15 @@ public class CompareController {
     @FXML
     TextArea s1, s2, resultOutput, resultMarks;
     @FXML
-    RadioButton EqualityCheck, DifferenceCheck;
+    RadioButton identical;
     @FXML
-    ToggleGroup CompareMode = new ToggleGroup();
+    RadioButton different;
     @FXML
-    Label resultLabel = new Label("Result");
+    ToggleGroup compareMode;
+
     @FXML
     public void initialize() {
         GuiController.setTitle("JSON tools - compare lines");
-        EqualityCheck.setToggleGroup(CompareMode);
-        DifferenceCheck.setToggleGroup(CompareMode);
     }
 
     @FXML
@@ -34,14 +32,7 @@ public class CompareController {
 
         args.setString1(s1.getText());
         args.setString2(s2.getText());
-
-        if (EqualityCheck.isSelected()) {
-            resultLabel.setText("Equal lines");
-            args.setReturnIdentical(true);
-        } else if (DifferenceCheck.isSelected()) {
-            resultLabel.setText("Different lines");
-            args.setReturnIdentical(false);
-        }
+        args.setReturnIdentical(identical.isSelected());
 
         LinkedHashSet<Integer> diffs = StringComparer.getLineNumbers(args);
 
@@ -52,15 +43,9 @@ public class CompareController {
                 marks.append("\n");
                 i++;
             }
-            if (args.isReturnIdentical()) {
-                marks.append("E");
-            } else {
-                marks.append("D");
-            }
+            marks.append("***");
         }
         resultMarks.setText(marks.toString());
-
-        System.out.println(diffs);
 
         resultOutput.setText(diffs.toString());
     }

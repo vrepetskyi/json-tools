@@ -13,13 +13,13 @@ public class JsonTools {
         try {
             new Thread(new ApiController()).start();
         } catch (Throwable e) {
-            logger.error("Error in ApiController", e);
+            logger.error("An unhandled ApiController error occurred", e);
         }
 
         try {
             new Thread(new GuiController()).start();
         } catch (Throwable e) {
-            logger.error("Error in GuiController", e);
+            logger.error("An unhandled GuiController error occurred", e);
         }
     }
 }

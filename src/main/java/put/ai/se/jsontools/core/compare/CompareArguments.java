@@ -9,23 +9,24 @@ public class CompareArguments {
         return string1;
     }
 
-    public void setString1(String value) {
-        string1 = value;
+    public void setString1(String string1) {
+        this.string1 = string1;
     }
 
     public String getString2() {
         return string2;
     }
 
-    public void setString2(String value) {
-        string2 = value;
+    public void setString2(String string2) {
+        this.string2 = string2;
     }
 
     public boolean isReturnIdentical() {
         return returnIdentical;
     }
 
-    public void setReturnIdentical(boolean value) {
-        returnIdentical = value;
+    public void setReturnIdentical(boolean returnIdentical) {
+        this.returnIdentical = returnIdentical;
     }
+
 }

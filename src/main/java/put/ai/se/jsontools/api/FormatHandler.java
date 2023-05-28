@@ -2,32 +2,18 @@ package put.ai.se.jsontools.api;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.Scanner;
-
-import com.google.gson.Gson;
-import com.sun.net.httpserver.HttpExchange;
-
-import put.ai.se.jsontools.core.JsonFormatter;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.google.gson.Gson;
+import com.sun.net.httpserver.HttpExchange;
+
+import put.ai.se.jsontools.core.format.FormatDirector;
+
 public class FormatHandler {
     private static final Logger logger = LoggerFactory.getLogger(FormatHandler.class);
-
-    private static void sendResponse(HttpExchange exchange, int resCode, String plainResBody, String ip)
-            throws IOException {
-        OutputStream resBody = exchange.getResponseBody();
-
-        byte[] resBodyBytes = plainResBody.getBytes();
-        exchange.sendResponseHeaders(resCode, resBodyBytes.length);
-        resBody.write(resBodyBytes);
-        resBody.flush();
-        exchange.close();
-
-        logger.info("{} /api/format response {}\n{}", ip, resCode, plainResBody);
-    }
 
     public static void handle(HttpExchange exchange) throws IOException {
         String ip = exchange.getRequestHeaders().getFirst("X-FORWARDED-FOR");
@@ -37,14 +23,15 @@ public class FormatHandler {
 
         InputStream reqBody = exchange.getRequestBody();
 
-        Scanner scanner = new Scanner(reqBody).useDelimiter("\\A");
-        String plainReqBody = scanner.hasNext() ? scanner.next() : "";
-        scanner.close();
+        String plainReqBody;
+        try (Scanner scanner = new Scanner(reqBody).useDelimiter("\\A")) {
+            plainReqBody = scanner.hasNext() ? scanner.next() : "";
+        }
 
         logger.info("{} /api/format request {}\n{}", ip, exchange.getRequestMethod(), plainReqBody);
 
         if (!"POST".equals(exchange.getRequestMethod())) {
-            sendResponse(exchange, 405, "Invalid request method", ip);
+            ApiController.sendResponse(exchange, 405, "Invalid request method", ip);
             return;
         }
 
@@ -56,27 +43,26 @@ public class FormatHandler {
             try {
                 parsedReq = new Gson().fromJson(plainReqBody, FormatRequest.class);
             } catch (Throwable e) {
-                throw new IllegalArgumentException("\"source\" and \"params\" should be JSON objects", e);
+                throw new IllegalArgumentException("Both \"source\" and \"arguments\" keys should be JSON objects", e);
             }
 
             if (parsedReq.getSource() == null)
-                throw new IllegalArgumentException("\"source\" is not specified");
+                throw new IllegalArgumentException("Key \"source\" is required");
 
-            if (parsedReq.getParams() == null)
-                throw new IllegalArgumentException("\"params\" are not specified");
+            if (parsedReq.getArguments() == null)
+                throw new IllegalArgumentException("Key \"arguments\" is required");
 
             resCode = 200;
-            plainResBody = JsonFormatter.format(parsedReq.getSource().toString(), parsedReq.getParams());
+            plainResBody = FormatDirector.formatJson(parsedReq.getSource(), parsedReq.getArguments());
         } catch (IllegalArgumentException e) {
             resCode = 400;
             plainResBody = e.getMessage();
         } catch (Throwable e) {
-            logger.error("{} /api/format error\n{}", ip, e);
-
+            logger.error(ip + " /api/format error", e);
             resCode = 500;
             plainResBody = "Unexpected error. Please, contact the support";
         }
 
-        sendResponse(exchange, resCode, plainResBody, ip);
+        ApiController.sendResponse(exchange, resCode, plainResBody, ip);
     }
 }

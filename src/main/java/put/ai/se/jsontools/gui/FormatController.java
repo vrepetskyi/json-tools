@@ -32,11 +32,13 @@ public class FormatController {
     @FXML
     public void format() {
         FormatArguments arguments = new FormatArguments();
-        FilterArguments filterArguments = arguments.getFilter();
 
         LinkedHashSet<String> filterKeys = new LinkedHashSet<>(Arrays.asList(keysTextField.getText().split("\n")));
+        FilterArguments filterArguments = new FilterArguments();
         filterArguments.setKeys(filterKeys.isEmpty() ? null : filterKeys);
         filterArguments.setExclude(exclude.isSelected());
+
+        arguments.setFilter(filterArguments);
         arguments.setPrettify(prettify.isSelected());
 
         try {

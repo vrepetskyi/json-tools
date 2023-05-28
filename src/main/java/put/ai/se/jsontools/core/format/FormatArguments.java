@@ -6,7 +6,7 @@ package put.ai.se.jsontools.core.format;
  * formatting options and provides methods to access these options.
  */
 public class FormatArguments {
-    private FilterArguments filter = new FilterArguments();
+    private FilterArguments filter;
     private boolean prettify;
 
     /**
@@ -17,6 +17,10 @@ public class FormatArguments {
      */
     public FilterArguments getFilter() {
         return filter;
+    }
+
+    public void setFilter(FilterArguments filter) {
+        this.filter = filter;
     }
 
     /**

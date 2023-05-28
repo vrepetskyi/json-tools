@@ -2,7 +2,6 @@ package put.ai.se.jsontools.api;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.io.OutputStream;
 import java.util.Scanner;
 
 import com.google.gson.Gson;
@@ -17,19 +16,6 @@ import org.slf4j.LoggerFactory;
 public class CompareHandler {
     private static final Logger logger = LoggerFactory.getLogger(ApiController.class);
 
-    private static void sendResponse(HttpExchange exchange, int resCode, String plainResBody, String ip)
-            throws IOException {
-        OutputStream resBody = exchange.getResponseBody();
-
-        byte[] resBodyBytes = plainResBody.getBytes();
-        exchange.sendResponseHeaders(resCode, resBodyBytes.length);
-        resBody.write(resBodyBytes);
-        resBody.flush();
-        exchange.close();
-
-        logger.info("{} /api/compare-lines response {}\n{}", ip, resCode, plainResBody);
-    }
-
     public static void handle(HttpExchange exchange) throws IOException {
         String ip = exchange.getRequestHeaders().getFirst("X-FORWARDED-FOR");
         if (ip == null) {
@@ -38,14 +24,15 @@ public class CompareHandler {
 
         InputStream reqBody = exchange.getRequestBody();
 
-        Scanner scanner = new Scanner(reqBody).useDelimiter("\\A");
-        String plainReqBody = scanner.hasNext() ? scanner.next() : "";
-        scanner.close();
+        String plainReqBody;
+        try (Scanner scanner = new Scanner(reqBody).useDelimiter("\\A")) {
+            plainReqBody = scanner.hasNext() ? scanner.next() : "";
+        }
 
         logger.info("{} /api/compare-lines request {}\n{}", ip, exchange.getRequestMethod(), plainReqBody);
 
         if (!"POST".equals(exchange.getRequestMethod())) {
-            sendResponse(exchange, 405, "Invalid request method", ip);
+            ApiController.sendResponse(exchange, 405, "Invalid request method", ip);
             return;
         }
 
@@ -61,11 +48,11 @@ public class CompareHandler {
             resCode = 400;
             plainResBody = e.getMessage();
         } catch (Throwable e) {
-            logger.error("{} /api/compare-lines error\n{}", ip, e);
+            logger.error(ip + " /api/compare-lines error", e);
             resCode = 500;
             plainResBody = "Unexpected error. Please, contact the support";
         }
 
-        sendResponse(exchange, resCode, plainResBody, ip);
+        ApiController.sendResponse(exchange, resCode, plainResBody, ip);
     }
 }

@@ -1,29 +1,29 @@
-package put.ai.se.jsontools.core;
+package put.ai.se.jsontools.core.format;
 
 import java.util.LinkedHashSet;
 
 import com.google.gson.Gson;
 import com.google.gson.JsonObject;
 
-public class JsonFilter extends JsonFormattableDecorator {
-    public JsonFilter(JsonFormattable source) {
+public class JsonFilter extends JsonFormatter {
+    public JsonFilter(FormattableJson source) {
         super(source);
     }
 
     @Override
-    public String getValue(JsonFormatParams params) {
-        String value = super.getValue(params);
+    public String getProcessed(FormatArguments arguments) {
+        String processed = super.getProcessed(arguments);
 
-        JsonFilterParams filter = params.getFilter();
+        FilterArguments filter = arguments.getFilter();
         if (filter == null)
-            return value;
+            return processed;
 
         Gson gson = new Gson();
-        JsonObject filtered = gson.fromJson(value, JsonObject.class);
+        JsonObject filtered = gson.fromJson(processed, JsonObject.class);
 
         LinkedHashSet<String> filterKeys = filter.getKeys();
         if (filterKeys == null)
-            return filter.getExclude() ? value : "{}";
+            return filter.getExclude() ? processed : "{}";
 
         LinkedHashSet<String> sourceKeys = new LinkedHashSet<>(filtered.keySet());
         if (filter.getExclude()) {

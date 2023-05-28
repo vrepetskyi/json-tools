@@ -10,9 +10,9 @@
 <?import javafx.scene.layout.HBox?>
 <?import javafx.scene.layout.RowConstraints?>
 <?import javafx.scene.layout.VBox?>
+<?import javafx.geometry.Insets?>
 
 <GridPane
-   alignment="CENTER"
    hgap="8"
    vgap="8"
    xmlns:fx="http://javafx.com/fxml/1"
@@ -29,6 +29,9 @@
       <RowConstraints vgrow="NEVER" prefHeight="96" />
       <RowConstraints vgrow="NEVER" prefHeight="48" />
    </rowConstraints>
+   <padding>
+      <Insets bottom="8" left="8" right="8" top="8" />
+   </padding>
    <children>
       <Label text="String 1" />
       <TextArea GridPane.rowIndex="1" fx:id="s1" />
@@ -36,20 +39,20 @@
       <Label GridPane.columnIndex="2" text="String 2" />
       <TextArea GridPane.rowIndex="1" GridPane.columnIndex="2" fx:id="s2" />
       <VBox GridPane.rowIndex="2" GridPane.columnSpan="3" spacing="8">
-         <Label text="Line numbers" />
+         <Label text="Line numbers (output)" />
          <TextArea fx:id="resultOutput" />
       </VBox>
       <HBox GridPane.rowIndex="3" GridPane.columnSpan="3" alignment="CENTER" spacing="16">
          <children>
-            <RadioButton fx:id="different" text="Find different" selected="true">
+            <RadioButton text="Find different" selected="true">
                <toggleGroup>
                   <ToggleGroup fx:id="compareMode" />
                </toggleGroup>
             </RadioButton>
             <RadioButton fx:id="identical" text="Find identical" toggleGroup="$compareMode">
             </RadioButton>
-            <Button mnemonicParsing="false" text="Back" onAction="#back" />
-            <Button mnemonicParsing="false" text="Compare" onAction="#compare" />
+            <Button prefWidth="128" prefHeight="32" text="Back" onAction="#back" />
+            <Button prefWidth="128" prefHeight="32" text="Compare" onAction="#compare" />
          </children>
       </HBox>
    </children>

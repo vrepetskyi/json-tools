@@ -28,8 +28,8 @@ public class GuiController extends Application implements Runnable {
     public void start(Stage stage) throws IOException {
         GuiController.stage = stage;
         scene = new Scene(loadFXML("menu"), 640, 480);
-        stage.setMinWidth(640);
-        stage.setMinHeight(510);
+        stage.setMinWidth(800);
+        stage.setMinHeight(600);
         stage.setScene(scene);
         stage.show();
         stage.setOnCloseRequest(e -> closeWindow());

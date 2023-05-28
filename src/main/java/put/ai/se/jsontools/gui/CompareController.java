@@ -2,30 +2,28 @@ package put.ai.se.jsontools.gui;
 
 import java.io.IOException;
 import java.util.LinkedHashSet;
-import java.util.stream.IntStream;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.ToggleGroup;
 import put.ai.se.jsontools.core.compare.CompareArguments;
 import put.ai.se.jsontools.core.compare.StringComparer;
 
 public class CompareController {
     @FXML
-    TextArea s1, s2, resultOutput, resultMarks;
+    TextArea s1;
     @FXML
-    RadioButton EqualityCheck, DifferenceCheck;
+    TextArea s2;
     @FXML
-    ToggleGroup CompareMode = new ToggleGroup();
+    RadioButton identical;
     @FXML
-    Label resultLabel = new Label("Result");
+    TextArea resultOutput;
+    @FXML
+    TextArea resultMarks;
+
     @FXML
     public void initialize() {
         GuiController.setTitle("JSON tools - compare lines");
-        EqualityCheck.setToggleGroup(CompareMode);
-        DifferenceCheck.setToggleGroup(CompareMode);
     }
 
     @FXML
@@ -34,14 +32,7 @@ public class CompareController {
 
         args.setString1(s1.getText());
         args.setString2(s2.getText());
-
-        if (EqualityCheck.isSelected()) {
-            resultLabel.setText("Equal lines");
-            args.setReturnIdentical(true);
-        } else if (DifferenceCheck.isSelected()) {
-            resultLabel.setText("Different lines");
-            args.setReturnIdentical(false);
-        }
+        args.setReturnIdentical(identical.isSelected());
 
         LinkedHashSet<Integer> diffs = StringComparer.getLineNumbers(args);
 
@@ -52,15 +43,9 @@ public class CompareController {
                 marks.append("\n");
                 i++;
             }
-            if (args.isReturnIdentical()) {
-                marks.append("E");
-            } else {
-                marks.append("D");
-            }
+            marks.append("***");
         }
         resultMarks.setText(marks.toString());
-
-        System.out.println(diffs);
 
         resultOutput.setText(diffs.toString());
     }

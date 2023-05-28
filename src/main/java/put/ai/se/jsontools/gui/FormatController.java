@@ -9,8 +9,6 @@ import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
 import put.ai.se.jsontools.core.JsonFormatParamsBuilder;
 import put.ai.se.jsontools.core.JsonFormatter;
 
@@ -20,19 +18,11 @@ public class FormatController {
     @FXML
     TextArea result;
     @FXML
-    ToggleGroup groupPrettify;
-    @FXML
-    RadioButton prettify;
-    @FXML
-    RadioButton minify;
-    @FXML
-    ToggleGroup groupExclude;
+    TextArea keysTextField;
     @FXML
     RadioButton exclude;
     @FXML
-    RadioButton include;
-    @FXML
-    TextField keysTextField;
+    RadioButton prettify;
 
     @FXML
     public void initialize() {
@@ -43,7 +33,7 @@ public class FormatController {
     public void format() {
         result.setText("");
 
-        List<String> separated = Arrays.asList(keysTextField.getText().split("\\s*,\\s*"));
+        List<String> separated = Arrays.asList(keysTextField.getText().split("\n"));
         LinkedHashSet<String> keys = new LinkedHashSet<>(separated);
 
         JsonFormatParamsBuilder params = new JsonFormatParamsBuilder();

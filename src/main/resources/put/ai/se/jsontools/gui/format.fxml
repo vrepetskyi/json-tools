@@ -1,80 +1,72 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<?import java.lang.*?>
-<?import java.util.*?>
-<?import javafx.scene.*?>
-<?import javafx.scene.control.*?>
-<?import javafx.scene.layout.*?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.RadioButton?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.control.ToggleGroup?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.geometry.Insets?>
 
-<VBox alignment="CENTER" spacing="20.0" xmlns="http://javafx.com/javafx/8.0.171"
+<GridPane
+    hgap="8"
+    vgap="8"
     xmlns:fx="http://javafx.com/fxml/1"
+    xmlns="http://javafx.com/javafx/8.0.171"
     fx:controller="put.ai.se.jsontools.gui.FormatController">
+    <columnConstraints>
+        <ColumnConstraints hgrow="ALWAYS" />
+        <ColumnConstraints hgrow="ALWAYS" />
+    </columnConstraints>
+    <rowConstraints>
+        <RowConstraints vgrow="NEVER" />
+        <RowConstraints vgrow="ALWAYS" />
+        <RowConstraints prefHeight="120" vgrow="NEVER" />
+    </rowConstraints>
+    <padding>
+        <Insets bottom="8" left="8" right="8" top="8" />
+    </padding>
     <children>
-        <HBox spacing="70">
+        <Label text="Source" />
+        <TextArea GridPane.rowIndex="1" fx:id="source" />
+        <Label GridPane.columnIndex="1" text="Result" />
+        <TextArea fx:id="result" GridPane.rowIndex="1" GridPane.columnIndex="1" />
+        <HBox GridPane.rowIndex="2" GridPane.columnSpan="2" alignment="CENTER" spacing="24">
             <children>
-                <VBox>
+                <TextArea
+                    fx:id="keysTextField"
+                    prefWidth="240"
+                    maxHeight="100"
+                    promptText="Filter keys; one per line"
+                />
+                <VBox alignment="CENTER_LEFT" spacing="8">
                     <children>
-                        <Label text="Source" />
-                        <TextArea fx:id="source" maxWidth="240" layoutX="20.0" layoutY="28.0" />
+                        <RadioButton text="Include" selected="true">
+                            <toggleGroup>
+                                <ToggleGroup fx:id="groupExclude" />
+                            </toggleGroup>
+                        </RadioButton>
+                        <RadioButton fx:id="exclude" text="Exclude" toggleGroup="$groupExclude" />
+                        <RadioButton text="Minify" selected="true">
+                            <toggleGroup>
+                                <ToggleGroup fx:id="groupPrettify" />
+                            </toggleGroup>
+                        </RadioButton>
+                        <RadioButton fx:id="prettify" text="Prettify" toggleGroup="$groupPrettify" />
                     </children>
                 </VBox>
-                <VBox>
+                <VBox alignment="CENTER" spacing="8">
                     <children>
-                        <Label text="Result" />
-                        <TextArea fx:id="result" maxWidth="240" layoutX="280.0" layoutY="28.0" />
+                        <Button prefWidth="128" prefHeight="32" text="Format" onAction="#format" />
+                        <Button prefWidth="128" prefHeight="32" text="Back" onAction="#back" />
                     </children>
                 </VBox>
             </children>
-            <padding>
-                <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-            </padding>
         </HBox>
-
-        <HBox>
-            <fx:define>
-                <ToggleGroup fx:id="groupPrettify" />
-            </fx:define>
-
-            <RadioButton fx:id="minify" text="Minify" toggleGroup="$groupPrettify" selected="true">
-                <HBox.margin>
-                    <Insets left="5.0" />
-                </HBox.margin>
-            </RadioButton>
-
-            <RadioButton fx:id="prettify" text="Prettify" toggleGroup="$groupPrettify">
-                <HBox.margin>
-                    <Insets left="20.0" />
-                </HBox.margin>
-            </RadioButton>
-
-            <fx:define>
-                <ToggleGroup fx:id="groupExclude" />
-            </fx:define>
-
-            <RadioButton fx:id="exclude" text="Exclude" toggleGroup="$groupExclude" selected="true">
-                <HBox.margin>
-                    <Insets left="80.0" />
-                </HBox.margin>
-            </RadioButton>
-
-            <RadioButton fx:id="include" text="Include" toggleGroup="$groupExclude">
-                <HBox.margin>
-                    <Insets left="5.0" />
-                </HBox.margin>
-            </RadioButton>
-
-            <TextField fx:id="keysTextField" prefWidth="250"
-                promptText="Enter here your keys separating them with a comma">
-                <HBox.margin>
-                    <Insets left="80.0" />
-                </HBox.margin>
-            </TextField>
-        </HBox>
-        <Button text="Format" onAction="#format" />
-        <Button text="Back" onAction="#back" />
     </children>
-    <padding>
-        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
-    </padding>
-</VBox>
+</GridPane>

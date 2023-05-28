@@ -133,14 +133,16 @@ public class JsonFormatterTest {
     void format_excludeFilter() {
         LinkedHashSet<String> set = new LinkedHashSet<>();
         set.add("age");
-        FormatArguments filterArguments = new FormatArguments();
-        filterArguments.setPrettify(false);
-        filterArguments.getFilter().setKeys(set);
-        filterArguments.getFilter().setExclude(true);
+        FormatArguments arguments = new FormatArguments();
+        FilterArguments filterArguments = new FilterArguments();
+        arguments.setFilter(filterArguments);
+        arguments.setPrettify(false);
+        filterArguments.setExclude(true);
+        filterArguments.setKeys(set);
 
         String expected = "{\"name\":\"Kowalski\",\"job\":\"Engineer\"}";
         String source = "{\"name\":\"Kowalski\",\"age\":23,\"job\":\"Engineer\"}";
-        String actual = FormatDirector.formatJson(source, filterArguments);
+        String actual = FormatDirector.formatJson(source, arguments);
 
         assertEquals(expected, actual);
     }
@@ -149,14 +151,16 @@ public class JsonFormatterTest {
     void format_excludeFilter_empty_excludeList() {
         LinkedHashSet<String> set = new LinkedHashSet<>();
         // set.add("age");
-        FormatArguments filterArguments = new FormatArguments();
-        filterArguments.setPrettify(false);
-        filterArguments.getFilter().setKeys(set);
-        filterArguments.getFilter().setExclude(true);
+        FormatArguments arguments = new FormatArguments();
+        FilterArguments filterArguments = new FilterArguments();
+        arguments.setFilter(filterArguments);
+        arguments.setPrettify(false);
+        filterArguments.setExclude(true);
+        filterArguments.setKeys(set);
 
         String expected = "{\"name\":\"Kowalski\",\"age\":23,\"job\":\"Engineer\"}";
         String source = "{\"name\":\"Kowalski\",\"age\":23,\"job\":\"Engineer\"}";
-        String actual = FormatDirector.formatJson(source, filterArguments);
+        String actual = FormatDirector.formatJson(source, arguments);
 
         assertEquals(expected, actual);
     }

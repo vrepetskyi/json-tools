@@ -3,16 +3,14 @@ package put.ai.se.jsontools.gui;
 import java.io.IOException;
 import java.util.Arrays;
 import java.util.LinkedHashSet;
-import java.util.List;
 
 import javafx.fxml.FXML;
 import javafx.scene.control.Alert;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
-import javafx.scene.control.ToggleGroup;
-import put.ai.se.jsontools.core.JsonFormatParamsBuilder;
-import put.ai.se.jsontools.core.JsonFormatter;
+import put.ai.se.jsontools.core.format.FilterArguments;
+import put.ai.se.jsontools.core.format.FormatArguments;
+import put.ai.se.jsontools.core.format.FormatDirector;
 
 public class FormatController {
     @FXML
@@ -20,19 +18,11 @@ public class FormatController {
     @FXML
     TextArea result;
     @FXML
-    ToggleGroup groupPrettify;
-    @FXML
-    RadioButton prettify;
-    @FXML
-    RadioButton minify;
-    @FXML
-    ToggleGroup groupExclude;
+    TextArea keysTextField;
     @FXML
     RadioButton exclude;
     @FXML
-    RadioButton include;
-    @FXML
-    TextField keysTextField;
+    RadioButton prettify;
 
     @FXML
     public void initialize() {
@@ -41,20 +31,18 @@ public class FormatController {
 
     @FXML
     public void format() {
-        result.setText("");
+        FormatArguments arguments = new FormatArguments();
+        FilterArguments filterArguments = arguments.getFilter();
 
-        List<String> separated = Arrays.asList(keysTextField.getText().split("\\s*,\\s*"));
-        LinkedHashSet<String> keys = new LinkedHashSet<>(separated);
-
-        JsonFormatParamsBuilder params = new JsonFormatParamsBuilder();
-
-        params.setFilterKeys(keys);
-        params.setExclude(exclude.isSelected());
-        params.setPrettify(prettify.isSelected());
+        LinkedHashSet<String> filterKeys = new LinkedHashSet<>(Arrays.asList(keysTextField.getText().split("\n")));
+        filterArguments.setKeys(filterKeys.isEmpty() ? null : filterKeys);
+        filterArguments.setExclude(exclude.isSelected());
+        arguments.setPrettify(prettify.isSelected());
 
         try {
-            result.setText(JsonFormatter.format(source.getText(), params));
+            result.setText(FormatDirector.formatJson(source.getText(), arguments));
         } catch (IllegalArgumentException e) {
+            result.setText(null);
             Alert errorAlert = new Alert(Alert.AlertType.ERROR);
             errorAlert.setHeaderText("Formatting error");
             errorAlert.setContentText(e.getMessage());

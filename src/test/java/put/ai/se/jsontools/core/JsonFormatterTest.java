@@ -7,35 +7,37 @@ import java.util.LinkedHashSet;
 import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
+import put.ai.se.jsontools.core.format.FormatArguments;
+import put.ai.se.jsontools.core.format.FormatDirector;
+
 public class JsonFormatterTest {
 
     @Test
-    void format_Default_Params() {
+    void format_Default_Arguments() {
         String expected = "{\"name\":\"John\",\"age\":30,\"city\":\"New York\",\"country\":\"USA\",\"attributes\":{\"height\":180,\"weight\":75}}";
-        JsonFormatParamsBuilder params = new JsonFormatParamsBuilder();
+        FormatArguments arguments = new FormatArguments();
         String source = "{\n" +
-        "  \"name\": \"John\",\n" +
-        "  \"age\": 30,\n" +
-        "  \"city\": \"New York\",\n" +
-        "  \"country\": \"USA\",\n" +
-        "  \"attributes\": {\n" +
-        "    \"height\": 180,\n" +
-        "    \"weight\": 75\n" +
-        "  }\n" +
-      "}";
-        String actual = JsonFormatter.format(source, params);
+                "  \"name\": \"John\",\n" +
+                "  \"age\": 30,\n" +
+                "  \"city\": \"New York\",\n" +
+                "  \"country\": \"USA\",\n" +
+                "  \"attributes\": {\n" +
+                "    \"height\": 180,\n" +
+                "    \"weight\": 75\n" +
+                "  }\n" +
+                "}";
+        String actual = FormatDirector.formatJson(source, arguments);
         assertEquals(expected, actual);
     }
 
-    
     @Test
     public void format_ValidJsonSource_PrettifyDisabled() {
         // Arrange
         String source = "{\"key\": \"value\"}";
-        JsonFormatParamsBuilder params = new JsonFormatParamsBuilder();
-        params.setPrettify(false);
+        FormatArguments arguments = new FormatArguments();
+        arguments.setPrettify(false);
         // Act
-        String result = JsonFormatter.format(source, params);
+        String result = FormatDirector.formatJson(source, arguments);
 
         // Assert
         String expected = "{\"key\":\"value\"}";
@@ -46,11 +48,11 @@ public class JsonFormatterTest {
     public void format_ValidJsonSource_PrettifyEnabled() {
         // Arrange
         String source = "{\"key\":\"value\"}";
-        JsonFormatParamsBuilder params = new JsonFormatParamsBuilder();
-        params.setPrettify(true);
+        FormatArguments arguments = new FormatArguments();
+        arguments.setPrettify(true);
 
         // Act
-        String result = JsonFormatter.format(source, params);
+        String result = FormatDirector.formatJson(source, arguments);
 
         // Assert
         String expected = "{\n  \"key\": \"value\"\n}";
@@ -61,22 +63,22 @@ public class JsonFormatterTest {
     public void format_InvalidJsonSource_ThrowsIllegalArgumentException() {
         // Arrange
         String source = "invalid json";
-        JsonFormatParamsBuilder params = new JsonFormatParamsBuilder();
+        FormatArguments arguments = new FormatArguments();
 
         // Act and Assert
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            JsonFormatter.format(source, params);
+            FormatDirector.formatJson(source, arguments);
         });
     }
 
     @Test
-    public void format_EmptyParams_ReturnsSourceWithoutFormatting() {
+    public void format_EmptyArguments_ReturnsSourceWithoutFormatting() {
         // Arrange
         String source = "{\"key\":\"value\"}";
-        JsonFormatParams params = new JsonFormatParams();
+        FormatArguments arguments = new FormatArguments();
 
         // Act
-        String result = JsonFormatter.format(source, params);
+        String result = FormatDirector.formatJson(source, arguments);
 
         // Assert
         String expected = "{\"key\":\"value\"}";
@@ -84,25 +86,25 @@ public class JsonFormatterTest {
     }
 
     @Test
-    public void format_NullParams_UsesDefaultParams() {
+    public void format_NullArguments_UsesDefaultArguments() {
         // Arrange
         String source = "{\"key\":\"value\"}";
-        JsonFormatParams params = null;
+        FormatArguments arguments = null;
 
         Assertions.assertThrows(NullPointerException.class, () -> {
-            JsonFormatter.format(source, params);
+            FormatDirector.formatJson(source, arguments);
         });
     }
 
-    @Test // doesn't work 
+    @Test // doesn't work
     public void format_EmptySource_ReturnsEmptyString() {
         // Arrange
         String source = "";
-        JsonFormatParamsBuilder params = new JsonFormatParamsBuilder();
-        params.setPrettify(true);
+        FormatArguments arguments = new FormatArguments();
+        arguments.setPrettify(true);
 
         Assertions.assertThrows(IllegalArgumentException.class, () -> {
-            JsonFormatter.format(source, params);
+            FormatDirector.formatJson(source, arguments);
         });
     }
 
@@ -112,14 +114,14 @@ public class JsonFormatterTest {
         set.add("name");
         set.add("job");
 
-        JsonFormatParamsBuilder filterParams = new JsonFormatParamsBuilder();
-        filterParams.setPrettify(false);
-        filterParams.setFilterMode(JsonFilterMode.Include);
-        filterParams.setFilterKeys(set);
-        
+        FormatArguments filterArguments = new FormatArguments();
+        filterArguments.setPrettify(false);
+        filterArguments.getFilter().setExclude(false);
+        filterArguments.getFilter().setKeys(set);
+
         String expected = "{\"name\":\"Kowalski\",\"job\":\"Engineer\"}";
         String source = "{\"name\":\"Kowalski\",\"age\":23,\"job\":\"Engineer\"}";
-        String actual = JsonFormatter.format(source, filterParams);
+        String actual = FormatDirector.formatJson(source, filterArguments);
 
         assertEquals(expected, actual);
     }
@@ -128,14 +130,14 @@ public class JsonFormatterTest {
     void format_excludeFilter() {
         LinkedHashSet<String> set = new LinkedHashSet<>();
         set.add("age");
-        JsonFormatParamsBuilder filterParams = new JsonFormatParamsBuilder();
-        filterParams.setPrettify(false);
-        filterParams.setFilterKeys(set);
-        filterParams.setFilterMode(JsonFilterMode.Exclude);
-        
+        FormatArguments filterArguments = new FormatArguments();
+        filterArguments.setPrettify(false);
+        filterArguments.getFilter().setKeys(set);
+        filterArguments.getFilter().setExclude(true);
+
         String expected = "{\"name\":\"Kowalski\",\"job\":\"Engineer\"}";
         String source = "{\"name\":\"Kowalski\",\"age\":23,\"job\":\"Engineer\"}";
-        String actual = JsonFormatter.format(source, filterParams);
+        String actual = FormatDirector.formatJson(source, filterArguments);
 
         assertEquals(expected, actual);
     }
@@ -144,14 +146,14 @@ public class JsonFormatterTest {
     void format_excludeFilter_empty_excludeList() {
         LinkedHashSet<String> set = new LinkedHashSet<>();
         // set.add("age");
-        JsonFormatParamsBuilder filterParams = new JsonFormatParamsBuilder();
-        filterParams.setPrettify(false);
-        filterParams.setFilterKeys(set);
-        filterParams.setFilterMode(JsonFilterMode.Exclude);
-        
+        FormatArguments filterArguments = new FormatArguments();
+        filterArguments.setPrettify(false);
+        filterArguments.getFilter().setKeys(set);
+        filterArguments.getFilter().setExclude(true);
+
         String expected = "{\"name\":\"Kowalski\",\"age\":23,\"job\":\"Engineer\"}";
         String source = "{\"name\":\"Kowalski\",\"age\":23,\"job\":\"Engineer\"}";
-        String actual = JsonFormatter.format(source, filterParams);
+        String actual = FormatDirector.formatJson(source, filterArguments);
 
         assertEquals(expected, actual);
     }

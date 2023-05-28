@@ -3,7 +3,7 @@ package put.ai.se.jsontools.api;
 import com.google.gson.JsonSyntaxException;
 import com.sun.net.httpserver.HttpExchange;
 
-import put.ai.se.jsontools.core.JsonFormatter;
+import put.ai.se.jsontools.core.format.FormatDirector;
 
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -30,13 +30,13 @@ public class FormatHandlerTest {
         when(httpExchange.getResponseBody()).thenReturn(responseBody);
     }
 
-
     @Test // In handleTest_NotPost we test the behavior of the FormatHandler when the request method is not POST.
     public void handleTest_NotPost() throws IOException {
         when(httpExchange.getRequestMethod()).thenReturn("GET");
         FormatHandler.handle(httpExchange);
         verify(httpExchange).sendResponseHeaders(405, -1);
-    } // 405 - The request method is known by the server but is not supported by the target resource.
+    } // 405 - The request method is known by the server but is not supported by the
+      // target resource.
 
     @Test // test, we are simulating the scenario where the request body isn't valid JSON format
     public void handleTest_IllegalRequestFormat() throws IOException {
@@ -55,38 +55,35 @@ public class FormatHandlerTest {
         verify(httpExchange).sendResponseHeaders(eq(200), anyLong());
     }
 
-@Test // This method tests the scenario where the JsonFormatter.format() method throws an IllegalArgumentException.
-public void handleTest_FormatIllegalArgumentException() throws IOException {
-    when(httpExchange.getRequestMethod()).thenReturn("POST");
-    requestBody = new ByteArrayInputStream("{\"source\": {\"key\": \"value\"}, \"params\": {}}".getBytes());
-    when(httpExchange.getRequestBody()).thenReturn(requestBody);
+    @Test // This method tests the scenario where the FormatDirector.formatJson() method throws an IllegalArgumentException.
+    public void handleTest_FormatIllegalArgumentException() throws IOException {
+        when(httpExchange.getRequestMethod()).thenReturn("POST");
+        requestBody = new ByteArrayInputStream("{\"source\": {\"key\": \"value\"}, \"params\": {}}".getBytes());
+        when(httpExchange.getRequestBody()).thenReturn(requestBody);
 
-    try (MockedStatic<JsonFormatter> mockFormatter = Mockito.mockStatic(JsonFormatter.class)) {
-        mockFormatter.when(() -> JsonFormatter.format(anyString(), any()))
-                .thenThrow(new IllegalArgumentException("Test Exception"));
+        try (MockedStatic<FormatDirector> mockFormatter = Mockito.mockStatic(FormatDirector.class)) {
+            mockFormatter.when(() -> FormatDirector.formatJson(anyString(), any()))
+                    .thenThrow(new IllegalArgumentException("Test Exception"));
 
-        FormatHandler.handle(httpExchange);
+            FormatHandler.handle(httpExchange);
+        }
+
+        verify(httpExchange).sendResponseHeaders(eq(400), anyLong());
     }
 
-    verify(httpExchange).sendResponseHeaders(eq(400), anyLong());
-}
+    @Test // This method tests the scenario where FormatDirector.formatJson() throws an unexpected RuntimeException. 
+    public void handleTest_FormatUnexpectedException() throws IOException {
+        when(httpExchange.getRequestMethod()).thenReturn("POST");
+        requestBody = new ByteArrayInputStream("{\"source\": {\"key\": \"value\"}, \"params\": {}}".getBytes());
+        when(httpExchange.getRequestBody()).thenReturn(requestBody);
 
-@Test // This method tests the scenario where JsonFormatter.format() throws an unexpected RuntimeException. 
-public void handleTest_FormatUnexpectedException() throws IOException {
-    when(httpExchange.getRequestMethod()).thenReturn("POST");
-    requestBody = new ByteArrayInputStream("{\"source\": {\"key\": \"value\"}, \"params\": {}}".getBytes());
-    when(httpExchange.getRequestBody()).thenReturn(requestBody);
+        try (MockedStatic<FormatDirector> mockFormatter = Mockito.mockStatic(FormatDirector.class)) {
+            mockFormatter.when(() -> FormatDirector.formatJson(anyString(), any()))
+                    .thenThrow(new RuntimeException());
 
-    try (MockedStatic<JsonFormatter> mockFormatter = Mockito.mockStatic(JsonFormatter.class)) {
-        mockFormatter.when(() -> JsonFormatter.format(anyString(), any()))
-                .thenThrow(new RuntimeException());
+            FormatHandler.handle(httpExchange);
+        }
 
-        FormatHandler.handle(httpExchange);
+        verify(httpExchange).sendResponseHeaders(eq(500), anyLong());
     }
-
-    verify(httpExchange).sendResponseHeaders(eq(500), anyLong());
 }
-
-
-}
-

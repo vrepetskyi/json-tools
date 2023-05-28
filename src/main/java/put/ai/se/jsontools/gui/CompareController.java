@@ -28,13 +28,13 @@ public class CompareController {
 
     @FXML
     private void compare() throws IOException {
-        CompareArguments args = new CompareArguments();
+        CompareArguments arguments = new CompareArguments();
 
-        args.setString1(s1.getText());
-        args.setString2(s2.getText());
-        args.setReturnIdentical(identical.isSelected());
+        arguments.setString1(s1.getText());
+        arguments.setString2(s2.getText());
+        arguments.setReturnIdentical(identical.isSelected());
 
-        LinkedHashSet<Integer> diffs = StringComparer.getLineNumbers(args);
+        LinkedHashSet<Integer> diffs = StringComparer.getLineNumbers(arguments);
 
         StringBuilder marks = new StringBuilder();
         int i = 1;

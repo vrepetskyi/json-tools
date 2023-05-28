@@ -16,7 +16,7 @@ public class ApiController implements Runnable {
         try {
             HttpServer server = HttpServer.create(new InetSocketAddress(8080), 0);
             server.createContext("/api/format", FormatHandler::handle);
-            server.createContext("/api/compare", CompareHandler::handle);
+            server.createContext("/api/compare-lines", CompareHandler::handle);
             server.setExecutor(null);
             server.start();
         } catch (IOException e) {

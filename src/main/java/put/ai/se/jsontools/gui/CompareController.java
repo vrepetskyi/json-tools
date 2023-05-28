@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.LinkedHashSet;
 
 import javafx.fxml.FXML;
-import javafx.scene.control.Label;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.ToggleGroup;

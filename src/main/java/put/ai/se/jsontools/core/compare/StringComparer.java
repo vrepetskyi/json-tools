@@ -14,14 +14,15 @@ public class StringComparer {
         String[] l1 = s1.split("\\r?\\n");
         String[] l2 = s2.split("\\r?\\n");
 
-        int lineNumber = Math.max(l1.length, l2.length);
+        int minLines = Math.min(l1.length, l2.length);
+        int maxLines = Math.max(l1.length, l2.length);
 
-        IntStream allLines = IntStream.range(0, lineNumber);
+        IntStream allLines = IntStream.range(0, maxLines);
 
         LinkedHashSet<Integer> result = new LinkedHashSet<>();
 
         allLines.forEach(i -> {
-            if (l1[i].equals(l2[i])) {
+            if (i < minLines && l1[i].equals(l2[i])) {
                 if (arguments.isReturnIdentical()) {
                     result.add(i + 1);
                 }

@@ -11,22 +11,20 @@ import put.ai.se.jsontools.gui.GuiController;
 public class JsonTools {
     private static final Logger logger = LoggerFactory.getLogger(JsonTools.class);
 
-    private static UncaughtExceptionHandler createExceptionHandler(String message) {
-        return new UncaughtExceptionHandler() {
+    private static Thread startThread(Runnable controller, String name) {
+        Thread thread = new Thread(controller);
+        thread.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
             @Override
             public void uncaughtException(Thread t, Throwable e) {
-                logger.error(message, e);
+                logger.error("An unhandled " + name + " exception", e);
             }
-        };
+        });
+        thread.start();
+        return thread;
     }
 
     public static void main(String[] args) {
-        Thread api = new Thread(new ApiController());
-        api.setUncaughtExceptionHandler(createExceptionHandler("An unhandled API exception"));
-        api.start();
-
-        Thread gui = new Thread(new GuiController());
-        gui.setUncaughtExceptionHandler(createExceptionHandler("An unhandled GUI exception"));
-        gui.start();
+        startThread(new ApiController(), "API");
+        startThread(new GuiController(), "GUI");
     }
 }

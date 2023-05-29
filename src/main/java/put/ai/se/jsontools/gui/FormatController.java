@@ -33,9 +33,11 @@ public class FormatController {
     public void format() {
         FormatArguments arguments = new FormatArguments();
 
-        LinkedHashSet<String> filterKeys = new LinkedHashSet<>(Arrays.asList(keysTextField.getText().split("\n")));
+        LinkedHashSet<String> filterKeys = null;
+        if (!keysTextField.getText().isEmpty())
+            filterKeys = new LinkedHashSet<>(Arrays.asList(keysTextField.getText().split("\n")));
         FilterArguments filterArguments = new FilterArguments();
-        filterArguments.setKeys(filterKeys.isEmpty() ? null : filterKeys);
+        filterArguments.setKeys(filterKeys);
         filterArguments.setExclude(exclude.isSelected());
 
         arguments.setFilter(filterArguments);

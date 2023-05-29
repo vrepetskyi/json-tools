@@ -1,8 +1,10 @@
 package put.ai.se.jsontools.api;
 
 import java.io.IOException;
+import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.InetSocketAddress;
+import java.util.Scanner;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -18,28 +20,64 @@ public class ApiController implements Runnable {
     private static final String FORMAT_ENDPOINT = API_PREFIX + "/format-json";
     private static final String COMPARE_ENDPOINT = API_PREFIX + "/compare-strings";
 
-    public static void sendResponse(HttpExchange exchange, int resCode, String plainResBody, String ip)
-            throws IOException {
-        OutputStream resBody = exchange.getResponseBody();
-
-        byte[] resBodyBytes = plainResBody.getBytes();
-        try {
-            exchange.sendResponseHeaders(resCode, resBodyBytes.length);
-            resBody.write(resBodyBytes);
-            resBody.flush();
-        } catch (Exception e) {
-            throw e;
-        }
-        exchange.close();
-        // TODO: typo
-        logger.info("{} /api/format response {}\n{}", ip, resCode, plainResBody);
-    }
-
     private static HttpHandler createHandler(String path, EndpointResolver resolver) {
         return new HttpHandler() {
             @Override
-            public void handle(HttpExchange exchange) throws IOException {
-                sendResponse(exchange, 0, resolver.resolve(path), path);
+            public void handle(HttpExchange exchange) {
+                String ip = "unknown";
+                int resCode = 200;
+                String plainResBody = "";
+
+                try {
+                    // Parse
+                    ip = exchange.getRequestHeaders().getFirst("X-FORWARDED-FOR");
+                    if (ip == null) {
+                        ip = exchange.getRemoteAddress().toString();
+                    }
+
+                    InputStream reqBody = exchange.getRequestBody();
+
+                    String plainReqBody;
+                    try (Scanner scanner = new Scanner(reqBody).useDelimiter("\\A")) {
+                        plainReqBody = scanner.hasNext() ? scanner.next() : "";
+                    }
+
+                    logger.info("{} " + path + " {}\n{}", ip, exchange.getRequestMethod(), plainReqBody);
+
+                    if ("POST".equals(exchange.getRequestMethod())) {
+                        // Resolve
+                        try {
+                            plainResBody = resolver.resolve(plainReqBody);
+                        } catch (IllegalArgumentException e) {
+                            resCode = 400;
+                            plainResBody = e.getMessage();
+                        }
+                    } else {
+                        resCode = 405;
+                        plainResBody = "Invalid request method";
+                    }
+                } catch (Throwable e) {
+                    resCode = 500;
+                    plainResBody = "Failed to process the request";
+                    logger.error(ip + " " + path + " " + plainResBody, e);
+                }
+
+                try {
+                    // Send
+                    OutputStream resBody = exchange.getResponseBody();
+                    byte[] resBodyBytes = plainResBody.getBytes();
+                    exchange.sendResponseHeaders(resCode, resBodyBytes.length);
+                    resBody.write(resBodyBytes);
+                    resBody.flush();
+                    logger.info("{} " + path + " {}\n{}", ip, resCode, plainResBody);
+                } catch (Throwable e) {
+                    resCode = 500;
+                    plainResBody = "Failed to send the response";
+                    logger.error(ip + " " + path + " " + plainResBody, e);
+                }
+
+                // Close
+                exchange.close();
             }
         };
     }
@@ -52,7 +90,7 @@ public class ApiController implements Runnable {
             server.createContext(COMPARE_ENDPOINT, createHandler(COMPARE_ENDPOINT, new CompareResolver()));
             server.start();
         } catch (IOException e) {
-            logger.error("An unhandled API error occurred", e);
+            logger.error("Failed to start an HTTP server", e);
         }
     }
 }

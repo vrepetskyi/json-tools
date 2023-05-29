@@ -103,7 +103,7 @@ Request format:
 
 Response: the line numbers as a JSON array.
 
-### Architecture
+## Architecture
 
 The project is divided into _core_, _api_, and _gui_ packages.
 

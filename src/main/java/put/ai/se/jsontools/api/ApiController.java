@@ -30,10 +30,13 @@ public class ApiController implements Runnable {
 
                 try {
                     // Parse
-                    ip = exchange.getRequestHeaders().getFirst("X-FORWARDED-FOR");
-                    if (ip == null) {
-                        ip = exchange.getRemoteAddress().toString();
-                    }
+                    String temp = null;
+                    if (exchange.getRequestHeaders() != null)
+                        temp = exchange.getRequestHeaders().getFirst("X-FORWARDED-FOR");
+                    if (temp == null && exchange.getRemoteAddress() != null)
+                        temp = exchange.getRemoteAddress().toString();
+                    if (temp != null)
+                        ip = temp;
 
                     InputStream reqBody = exchange.getRequestBody();
 

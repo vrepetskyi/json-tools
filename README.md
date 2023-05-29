@@ -43,6 +43,12 @@ _Get the compiled **JAR** [**there**](https://vrepetskyi.github.io/json-tools/js
 
 ## GUI
 
+<div style="display:flex;flex-wrap:wrap">
+    <img src="docs/demo/menu.png" alt="Menu view" height="300">
+    <img src="docs/demo/format.png" alt="Formatting view" height="300">
+    <img src="docs/demo/compare.png" alt="Comparison view" height="300">
+</div>
+
 ## API
 
 <table>

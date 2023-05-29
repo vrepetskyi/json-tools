@@ -18,11 +18,14 @@ public class JsonFilter extends JsonFormatter {
         if (filter == null)
             return processed;
 
+        LinkedHashSet<String> filterKeys = filter.getKeys();
+        if (filterKeys == null)
+            return processed;
+
         Gson gson = new Gson();
         JsonObject filtered = gson.fromJson(processed, JsonObject.class);
 
-        LinkedHashSet<String> filterKeys = filter.getKeys();
-        if (filterKeys == null)
+        if (filterKeys.isEmpty())
             return filter.getExclude() ? processed : "{}";
 
         LinkedHashSet<String> sourceKeys = new LinkedHashSet<>(filtered.keySet());

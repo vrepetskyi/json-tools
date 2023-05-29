@@ -10,13 +10,12 @@ import javafx.stage.Stage;
 import java.io.IOException;
 
 public class GuiController extends Application implements Runnable {
-
     private static Stage stage;
     private static Scene scene;
 
-    @Override
-    public void run() {
-        javafx.application.Application.launch(GuiController.class);
+    private static Parent loadFXML(String fxml) throws IOException {
+        FXMLLoader fxmlLoader = new FXMLLoader(GuiController.class.getResource(fxml + ".fxml"));
+        return fxmlLoader.load();
     }
 
     public void closeWindow() {
@@ -35,19 +34,19 @@ public class GuiController extends Application implements Runnable {
         stage.setOnCloseRequest(e -> closeWindow());
     }
 
-    static void setRoot(String fxml) throws IOException {
+    public static void setRoot(String fxml) throws IOException {
         scene.setRoot(loadFXML(fxml));
     }
 
-    static void setTitle(String title) {
+    public static void setTitle(String title) {
         if (stage == null)
             return;
 
         stage.setTitle(title);
     }
 
-    private static Parent loadFXML(String fxml) throws IOException {
-        FXMLLoader fxmlLoader = new FXMLLoader(GuiController.class.getResource(fxml + ".fxml"));
-        return fxmlLoader.load();
+    @Override
+    public void run() {
+        javafx.application.Application.launch(GuiController.class);
     }
 }

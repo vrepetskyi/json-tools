@@ -12,7 +12,6 @@ import com.google.gson.JsonParser;
  * accordingly.
  */
 public class JsonPrettifier extends JsonFormatter {
-
     /**
      * Constructs a new JsonPrettifier object with the specified source.
      *

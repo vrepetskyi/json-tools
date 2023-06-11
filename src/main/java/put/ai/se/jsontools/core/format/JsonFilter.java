@@ -12,7 +12,6 @@ import com.google.gson.JsonObject;
  * accordingly.
  */
 public class JsonFilter extends JsonFormatter {
-
     /**
      * Constructs a new JsonFilter object with the specified source.
      *

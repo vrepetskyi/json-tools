@@ -14,6 +14,9 @@ public class CompareResolver implements EndpointResolver {
 
     @Override
     public String resolve(String plainReqBody) {
+        if (plainReqBody == null)
+            throw new IllegalArgumentException(FORMAT_ERROR);
+
         CompareRequest parsedReq;
         try {
             parsedReq = new Gson().fromJson(plainReqBody, CompareRequest.class);

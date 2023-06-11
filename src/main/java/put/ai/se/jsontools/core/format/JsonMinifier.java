@@ -22,8 +22,8 @@ public class JsonMinifier extends JsonFormatter {
     /**
      * Gets the minified JSON representation from the decorated source.
      *
-     * @param params the JsonFormatParams object containing formatting parameters
-     *               (ignored in minification)
+     * @param arguments the JsonFormatParams object containing formatting parameters
+     *                  (ignored in minification)
      * @return the minified JSON representation
      */
     @Override

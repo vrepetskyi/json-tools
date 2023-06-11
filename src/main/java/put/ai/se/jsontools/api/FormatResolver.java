@@ -12,6 +12,9 @@ public class FormatResolver implements EndpointResolver {
 
     @Override
     public String resolve(String plainReqBody) throws IllegalArgumentException {
+        if (plainReqBody == null)
+            throw new IllegalArgumentException(FORMAT_ERROR);
+
         FormatRequest parsedReq;
         try {
             parsedReq = new Gson().fromJson(plainReqBody, FormatRequest.class);

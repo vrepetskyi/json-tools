@@ -24,7 +24,7 @@ public class JsonPrettifier extends JsonFormatter {
     /**
      * Returns the prettified JSON value.
      *
-     * @param params the JsonFormatParams (not used in this implementation)
+     * @param arguments the JsonFormatParams (not used in this implementation)
      * @return the prettified JSON value
      */
     @Override

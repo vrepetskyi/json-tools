@@ -48,7 +48,7 @@ public class JsonValidator implements FormattableJson {
     /**
      * Constructs a new `JsonString` object with the provided value.
      *
-     * @param value The JSON string value.
+     * @param source The JSON string value.
      * @throws IllegalArgumentException If the provided value is not a valid JSON
      *                                  string.
      */

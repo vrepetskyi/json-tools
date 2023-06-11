@@ -24,7 +24,7 @@ public class JsonFilter extends JsonFormatter {
     /**
      * Returns the filtered JSON value based on the provided filter parameters.
      *
-     * @param params the JsonFormatParams containing the filter parameters
+     * @param arguments the JsonFormatParams containing the filter parameters
      * @return the filtered JSON value
      */
     @Override

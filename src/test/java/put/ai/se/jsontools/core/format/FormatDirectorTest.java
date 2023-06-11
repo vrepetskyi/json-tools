@@ -1,10 +1,10 @@
 package put.ai.se.jsontools.core.format;
 
-import static org.junit.Assert.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.util.LinkedHashSet;
 
-import org.junit.jupiter.api.Assertions;
 import org.junit.jupiter.api.Test;
 
 public class FormatDirectorTest {
@@ -37,7 +37,7 @@ public class FormatDirectorTest {
 
         // Assert
         String expected = "{\"key\":\"value\"}";
-        Assertions.assertEquals(expected, result);
+        assertEquals(expected, result);
     }
 
     @Test
@@ -52,7 +52,7 @@ public class FormatDirectorTest {
 
         // Assert
         String expected = "{\n  \"key\": \"value\"\n}";
-        Assertions.assertEquals(expected, result);
+        assertEquals(expected, result);
     }
 
     @Test
@@ -62,7 +62,7 @@ public class FormatDirectorTest {
         FormatArguments arguments = new FormatArguments();
 
         // Act and Assert
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(IllegalArgumentException.class, () -> {
             FormatDirector.formatJson(source, arguments);
         });
     }
@@ -78,7 +78,7 @@ public class FormatDirectorTest {
 
         // Assert
         String expected = "{\"key\":\"value\"}";
-        Assertions.assertEquals(expected, result);
+        assertEquals(expected, result);
     }
 
     @Test
@@ -87,7 +87,7 @@ public class FormatDirectorTest {
         String source = "{\"key\":\"value\"}";
         FormatArguments arguments = null;
 
-        Assertions.assertThrows(NullPointerException.class, () -> {
+        assertThrows(NullPointerException.class, () -> {
             FormatDirector.formatJson(source, arguments);
         });
     }
@@ -99,7 +99,7 @@ public class FormatDirectorTest {
         FormatArguments arguments = new FormatArguments();
         arguments.setPrettify(true);
 
-        Assertions.assertThrows(IllegalArgumentException.class, () -> {
+        assertThrows(IllegalArgumentException.class, () -> {
             FormatDirector.formatJson(source, arguments);
         });
     }

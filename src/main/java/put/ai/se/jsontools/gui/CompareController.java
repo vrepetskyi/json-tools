@@ -25,12 +25,14 @@ public class CompareController {
     @FXML
     public void initialize() {
         GuiController.setTitle("JSON tools - compare lines");
+
+        resultMarks.scrollTopProperty().bindBidirectional(s1.scrollTopProperty());
+        s2.scrollTopProperty().bindBidirectional(resultMarks.scrollTopProperty());
     }
 
     @FXML
     private void compare() {
         CompareArguments arguments = new CompareArguments();
-
         arguments.setMode(identical.isSelected() ? CompareMode.identical : CompareMode.different);
 
         LinkedHashSet<Integer> diffs = StringComparer.getLineNumbers(s1.getText(), s2.getText(), arguments);

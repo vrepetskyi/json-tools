@@ -7,6 +7,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import put.ai.se.jsontools.core.compare.CompareArguments;
+import put.ai.se.jsontools.core.compare.CompareMode;
 import put.ai.se.jsontools.core.compare.StringComparer;
 
 public class CompareController {
@@ -27,14 +28,12 @@ public class CompareController {
     }
 
     @FXML
-    private void compare() throws IOException {
+    private void compare() {
         CompareArguments arguments = new CompareArguments();
 
-        arguments.setString1(s1.getText());
-        arguments.setString2(s2.getText());
-        arguments.setReturnIdentical(identical.isSelected());
+        arguments.setMode(identical.isSelected() ? CompareMode.identical : CompareMode.different);
 
-        LinkedHashSet<Integer> diffs = StringComparer.getLineNumbers(arguments);
+        LinkedHashSet<Integer> diffs = StringComparer.getLineNumbers(s1.getText(), s2.getText(), arguments);
 
         StringBuilder marks = new StringBuilder();
         int i = 1;

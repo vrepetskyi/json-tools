@@ -20,7 +20,7 @@
    fx:controller="put.ai.se.jsontools.gui.CompareController">
    <columnConstraints>
       <ColumnConstraints hgrow="ALWAYS" />
-      <ColumnConstraints hgrow="NEVER" prefWidth="48" />
+      <ColumnConstraints hgrow="NEVER" prefWidth="64" />
       <ColumnConstraints hgrow="ALWAYS" />
    </columnConstraints>
    <rowConstraints>
@@ -35,12 +35,18 @@
    <children>
       <Label text="String 1" />
       <TextArea GridPane.rowIndex="1" fx:id="s1" />
-      <TextArea fx:id="resultMarks" GridPane.rowIndex="1" GridPane.columnIndex="1" editable="false" />
+      <TextArea
+         fx:id="resultMarks"
+         GridPane.rowIndex="1"
+         GridPane.columnIndex="1"
+         editable="false"
+         wrapText="true"
+      />
       <Label GridPane.columnIndex="2" text="String 2" />
       <TextArea GridPane.rowIndex="1" GridPane.columnIndex="2" fx:id="s2" />
       <VBox GridPane.rowIndex="2" GridPane.columnSpan="3" spacing="8">
          <Label text="Line numbers (output)" />
-         <TextArea fx:id="resultOutput" />
+         <TextArea fx:id="resultOutput" wrapText="true" />
       </VBox>
       <HBox GridPane.rowIndex="3" GridPane.columnSpan="3" alignment="CENTER" spacing="16">
          <children>

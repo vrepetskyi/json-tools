@@ -26,9 +26,7 @@ public class GuiController extends Application implements Runnable {
     @Override
     public void start(Stage stage) throws IOException {
         GuiController.stage = stage;
-        scene = new Scene(loadFXML("menu"), 640, 480);
-        stage.setMinWidth(800);
-        stage.setMinHeight(600);
+        scene = new Scene(loadFXML("menu"), 800, 600);
         stage.setScene(scene);
         stage.show();
         stage.setOnCloseRequest(e -> closeWindow());
@@ -41,7 +39,6 @@ public class GuiController extends Application implements Runnable {
     public static void setTitle(String title) {
         if (stage == null)
             return;
-
         stage.setTitle(title);
     }
 

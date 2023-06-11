@@ -12,6 +12,7 @@ import org.mockito.Mockito;
 
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import java.io.*;
+
 import static org.mockito.Mockito.*;
 
 public class FormatHandlerTest {
@@ -39,7 +40,7 @@ public class FormatHandlerTest {
       // target resource.
 
     @Test // test, we are simulating the scenario where the request body isn't valid JSON format
-    public void handleTest_IllegalRequestFormat() throws IOException {
+    public void handleTest_IllegalRequestFormat() {
         when(httpExchange.getRequestMethod()).thenReturn("POST");
         requestBody = new ByteArrayInputStream("not a valid json".getBytes());
         when(httpExchange.getRequestBody()).thenReturn(requestBody);

@@ -29,9 +29,11 @@ public class CompareHandler {
             plainReqBody = scanner.hasNext() ? scanner.next() : "";
         }
 
-        logger.info("{} /api/compare-lines request {}\n{}", ip, exchange.getRequestMethod(), plainReqBody);
+        String reqMethod = exchange.getRequestMethod();
 
-        if (!"POST".equals(exchange.getRequestMethod())) {
+        logger.info("{} /api/compare-lines request {}\n{}", ip, reqMethod, plainReqBody);
+
+        if (!"POST".equals(reqMethod)) {
             ApiController.sendResponse(exchange, 405, "Invalid request method", ip);
             return;
         }

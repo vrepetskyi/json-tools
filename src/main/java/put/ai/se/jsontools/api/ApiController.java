@@ -16,28 +16,26 @@ import com.sun.net.httpserver.HttpServer;
 public class ApiController implements Runnable {
     private static final Logger logger = LoggerFactory.getLogger(ApiController.class);
 
-    private static final String API_PREFIX = "/api";
-    private static final String FORMAT_ENDPOINT = API_PREFIX + "/format-json";
-    private static final String COMPARE_ENDPOINT = API_PREFIX + "/compare-strings";
+    static final String API_PREFIX = "/api";
+    static final String FORMAT_ENDPOINT = API_PREFIX + "/format-json";
+    static final String COMPARE_ENDPOINT = API_PREFIX + "/compare-strings";
 
-    private static HttpHandler createHandler(String path, EndpointResolver resolver) {
+    static final String SERVER_START_FAILURE = "Failed to start an HTTP server";
+    static final String BAD_REQUEST_METHOD = "Invalid request method";
+    static final String PROCESSING_FAILURE = "Failed to process the request";
+    static final String RESPONSE_FAILURE = "Failed to send the response";
+
+    static HttpHandler createHandler(String path, EndpointResolver resolver) {
         return new HttpHandler() {
             @Override
             public void handle(HttpExchange exchange) {
-                String ip = "unknown";
-                int resCode = 200;
-                String plainResBody = "";
+                String ip = exchange.getRequestHeaders().getFirst("X-FORWARDED-FOR");
+                if (ip == null)
+                    ip = exchange.getRemoteAddress().toString();
 
+                int resCode;
+                String plainResBody;
                 try {
-                    // Parse
-                    String temp = null;
-                    if (exchange.getRequestHeaders() != null)
-                        temp = exchange.getRequestHeaders().getFirst("X-FORWARDED-FOR");
-                    if (temp == null && exchange.getRemoteAddress() != null)
-                        temp = exchange.getRemoteAddress().toString();
-                    if (temp != null)
-                        ip = temp;
-
                     InputStream reqBody = exchange.getRequestBody();
 
                     String plainReqBody;
@@ -45,41 +43,38 @@ public class ApiController implements Runnable {
                         plainReqBody = scanner.hasNext() ? scanner.next() : "";
                     }
 
-                    logger.info("{} " + path + " {}\n{}", ip, exchange.getRequestMethod(), plainReqBody);
+                    logger.info("{} {} {}\n{}", ip, path, exchange.getRequestMethod(), plainReqBody);
 
                     if ("POST".equals(exchange.getRequestMethod())) {
-                        // Resolve
                         try {
-                            plainResBody = resolver.resolve(plainReqBody);
+                            String result = resolver.resolve(plainReqBody);
+                            resCode = 200;
+                            plainResBody = result;
                         } catch (IllegalArgumentException e) {
                             resCode = 400;
                             plainResBody = e.getMessage();
                         }
                     } else {
                         resCode = 405;
-                        plainResBody = "Invalid request method";
+                        plainResBody = BAD_REQUEST_METHOD;
                     }
                 } catch (Throwable e) {
                     resCode = 500;
-                    plainResBody = "Failed to process the request";
+                    plainResBody = PROCESSING_FAILURE;
                     logger.error(ip + " " + path + " " + plainResBody, e);
                 }
 
                 try {
-                    // Send
                     OutputStream resBody = exchange.getResponseBody();
                     byte[] resBodyBytes = plainResBody.getBytes();
                     exchange.sendResponseHeaders(resCode, resBodyBytes.length);
                     resBody.write(resBodyBytes);
                     resBody.flush();
-                    logger.info("{} " + path + " {}\n{}", ip, resCode, plainResBody);
+                    logger.info("{} {} {}\n{}", ip, path, resCode, plainResBody);
                 } catch (Throwable e) {
-                    resCode = 500;
-                    plainResBody = "Failed to send the response";
-                    logger.error(ip + " " + path + " " + plainResBody, e);
+                    logger.error(ip + " " + path + " " + RESPONSE_FAILURE, e);
                 }
 
-                // Close
                 exchange.close();
             }
         };
@@ -93,7 +88,7 @@ public class ApiController implements Runnable {
             server.createContext(COMPARE_ENDPOINT, createHandler(COMPARE_ENDPOINT, new CompareResolver()));
             server.start();
         } catch (IOException e) {
-            logger.error("Failed to start an HTTP server", e);
+            logger.error(SERVER_START_FAILURE, e);
         }
     }
 }

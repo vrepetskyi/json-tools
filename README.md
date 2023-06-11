@@ -23,41 +23,6 @@ The _gui_ contains _controllers_ for the _menu_, _formatting_, and _comparison_ 
 
 The _main application class_ is _JsonTools_. It _starts separate threads for API and GUI_.
 
-## Execution
-
-<table>
-    <tr>
-        <td colspan="2">Compiled</td>
-    </tr>
-    <tr>
-        <td><code>java -jar json-tools*.jar</code></td>
-        <td>* stands for version</td>
-    </tr>
-    <tr>
-        <td colspan="2">Source</td>
-    </tr>
-    <tr>
-        <td><code>mvn install</code></td>
-        <td>install <em>dependencies</em></td>
-    </tr>
-    <tr>
-        <td><code>mvn javafx:run</code></td>
-        <td><em>run</em> from source</td>
-    </tr>
-    <tr>
-        <td><code>mvn package</code></td>
-        <td>create a <em>jar</em> at target directory</td>
-    </tr>
-    <tr>
-        <td><code>mvn verify</code></td>
-        <td>prepare everything for <em>deploy</em></td>
-    </tr>
-    <tr>
-        <td><code>mvn clean</code></td>
-        <td>in case something went wrong</td>
-    </tr>
-</table>
-
 ## API
 
 <table>
@@ -116,3 +81,38 @@ Successfull response: the line numbers as a JSON array.
 <img src="docs/demo/menu.png" alt="Menu view" width="560">
 <img src="docs/demo/format.png" alt="Formatting view" width="560">
 <img src="docs/demo/compare.png" alt="Comparison view" width="560">
+
+## Execution
+
+<table>
+    <tr>
+        <td colspan="2">Compiled</td>
+    </tr>
+    <tr>
+        <td><code>java -jar json-tools*.jar</code></td>
+        <td>* stands for version</td>
+    </tr>
+    <tr>
+        <td colspan="2">Source</td>
+    </tr>
+    <tr>
+        <td><code>mvn install</code></td>
+        <td>install <em>dependencies</em></td>
+    </tr>
+    <tr>
+        <td><code>mvn javafx:run</code></td>
+        <td><em>run</em> from source</td>
+    </tr>
+    <tr>
+        <td><code>mvn package</code></td>
+        <td>create a <em>jar</em> at target directory</td>
+    </tr>
+    <tr>
+        <td><code>mvn verify</code></td>
+        <td>prepare everything for <em>deploy</em></td>
+    </tr>
+    <tr>
+        <td><code>mvn clean</code></td>
+        <td>in case something went wrong</td>
+    </tr>
+</table>

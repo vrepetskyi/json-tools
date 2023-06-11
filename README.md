@@ -4,6 +4,13 @@ Software Engineering final team project implementing _REST API_ and _JavaFX GUI_
 
 > Application for programmers who need to reformat or filter data structures saved in JSON format and to compare the structures with each other. JSON tools application allows you to both minify the unminified JSON representation, as well as the reverse operation (with any blanks and new lines added). The application will be available via GUI, as well as as a remote API, so it can be integrated with existing tools.
 
+## Links
+
+- [**_Javadoc and UML_**](https://vrepetskyi.github.io/json-tools/)
+- [**_The latest JAR_**](https://vrepetskyi.github.io/json-tools/json-tools.zip)
+- [**_All releases and JARs_**](https://github.com/vrepetskyi/json-tools/releases)
+- [**_Development roadmap_**](https://github.com/users/vrepetskyi/projects/1/)
+
 ## Architecture
 
 The project is divided into _core_, _api_, and _gui_ packages.
@@ -16,14 +23,7 @@ The _gui_ contains _controllers_ for the _menu_, _formatting_, and _comparison_ 
 
 The _main application class_ is _JsonTools_. It _starts separate threads for API and GUI_.
 
-## Links
-
-- [**_Javadoc and UML_**](https://vrepetskyi.github.io/json-tools/)
-- [**_The latest JAR_**](https://vrepetskyi.github.io/json-tools/json-tools.zip)
-- [**_All releases and JARs_**](https://github.com/vrepetskyi/json-tools/releases)
-- [**_Development roadmap_**](https://github.com/users/vrepetskyi/projects/1/)
-
-## Usage
+## Execution
 
 <table>
     <tr>

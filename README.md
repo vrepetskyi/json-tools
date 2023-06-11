@@ -6,7 +6,7 @@ Software Engineering final team project implementing _REST API_ and _JavaFX GUI_
 
 ## Usage
 
-_Get the compiled **JAR** [**there**](https://vrepetskyi.github.io/json-tools/json-tools.zip) or as a [**release attachment**](https://github.com/vrepetskyi/json-tools/releases). The **Javadocs** are available [**online**](https://vrepetskyi.github.io/json-tools/) too._
+_Get the compiled **JAR** [**there**](https://vrepetskyi.github.io/json-tools/json-tools.zip) or as a [**release attachment**](https://github.com/vrepetskyi/json-tools/releases). The **Javadocs** are available [**online**](https://vrepetskyi.github.io/json-tools/), too._
 
 <table>
     <tr>
@@ -43,10 +43,17 @@ _Get the compiled **JAR** [**there**](https://vrepetskyi.github.io/json-tools/js
 
 ## GUI
 
-<div style="display:flex;flex-wrap:wrap">
-    <img src="docs/demo/menu.png" alt="Menu view" height="300">
-    <img src="docs/demo/format.png" alt="Formatting view" height="300">
-    <img src="docs/demo/compare.png" alt="Comparison view" height="300">
+<style>
+    img {
+        width: 560px;
+        max-width: 100%;
+    }
+</style>
+
+<div style="display:flex;flex-direction:column;gap:8px">
+    <img src="docs/demo/menu.png" alt="Menu view">
+    <img src="docs/demo/format.png" alt="Formatting view">
+    <img src="docs/demo/compare.png" alt="Comparison view">
 </div>
 
 ## API
@@ -75,17 +82,16 @@ Request format:
 ```
 {
     "source",           // * A JSON object to be formatted
-    "arguments": {      // * Formatting options
-        "filter": {     //   Filtering options; ommited if null
-            "keys",     //   Array of strings representing keys; ommited if null
-            "exclude"   //   Returns everything except for the specified keys if true;
-        },              //   opposite otherwise
-        "prettify"      //   Returns prettified JSON if true; minified otherwise
+    "arguments": {      // * Formatting arguments
+        "filter": {     //   Filtering arguments; ommited if incomplete
+            "keys",     //   A string array of keys to filter; no nesting
+            "exclude"   //   A flag to include/exclude the specified keys
+        "prettify"      //   A flag for prettification/minification of the result
     }
 }
 ```
 
-Response: the resulting JSON.
+Successfull response: the resulting JSON.
 
 ### /api/compare-strings
 
@@ -95,13 +101,13 @@ Request format:
 {
   "s1",                 // * The first string to be compared
   "s2",                 // * The second string to be compared
-  "arguments": {        // * Comparison options
-    "mode"              // * Look for "different"/"identical" elements
+  "arguments": {        // * Comparison arguments
+    "mode"              // * Categorical; either "different" or "identical"
   }
 }
 ```
 
-Response: the line numbers as a JSON array.
+Successfull response: the line numbers as a JSON array.
 
 ## Architecture
 
@@ -113,4 +119,4 @@ The _api_ creates a _vanilla HTTP server_ and registers the required endpoints. 
 
 The _gui_ contains _controllers_ for the _menu_, _formatting_, and _comparison_ views. The _layout_ is defined using _FXML_ and is _responsive_.
 
-Finally, _JsonTools_, the _main application class_, _starts separate threads for API and GUI_.
+The _main application class_ is _JsonTools_. It _starts separate threads for API and GUI_.

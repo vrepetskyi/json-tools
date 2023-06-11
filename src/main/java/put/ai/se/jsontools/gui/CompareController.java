@@ -4,8 +4,10 @@ import java.io.IOException;
 import java.util.LinkedHashSet;
 
 import javafx.fxml.FXML;
+import javafx.scene.control.RadioButton;
 import javafx.scene.control.TextArea;
 import put.ai.se.jsontools.core.compare.CompareArguments;
+import put.ai.se.jsontools.core.compare.CompareMode;
 import put.ai.se.jsontools.core.compare.StringComparer;
 
 public class CompareController {
@@ -13,6 +15,12 @@ public class CompareController {
     TextArea s1;
     @FXML
     TextArea s2;
+    @FXML
+    RadioButton identical;
+    @FXML
+    TextArea resultOutput;
+    @FXML
+    TextArea resultMarks;
 
     @FXML
     public void initialize() {
@@ -20,15 +28,25 @@ public class CompareController {
     }
 
     @FXML
-    private void compare() throws IOException {
-        CompareArguments args = new CompareArguments();
+    private void compare() {
+        CompareArguments arguments = new CompareArguments();
 
-        args.setString1(s1.getText());
-        args.setString2(s2.getText());
+        arguments.setMode(identical.isSelected() ? CompareMode.identical : CompareMode.different);
 
-        LinkedHashSet<Integer> diffs = StringComparer.getLineNumbers(args);
+        LinkedHashSet<Integer> diffs = StringComparer.getLineNumbers(s1.getText(), s2.getText(), arguments);
 
-        System.out.println(diffs);
+        StringBuilder marks = new StringBuilder();
+        int i = 1;
+        for (int index : diffs) {
+            while (i != index) {
+                marks.append("\n");
+                i++;
+            }
+            marks.append("***");
+        }
+        resultMarks.setText(marks.toString());
+
+        resultOutput.setText(diffs.toString());
     }
 
     @FXML

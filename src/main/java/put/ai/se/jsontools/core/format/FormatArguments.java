@@ -1,22 +1,26 @@
-package put.ai.se.jsontools.core;
+package put.ai.se.jsontools.core.format;
 
 /**
  * The objective of the JsonFormatParams class is to provide a base class for
  * defining parameters used for formatting JSON strings. It encapsulates the
  * formatting options and provides methods to access these options.
  */
-public class JsonFormatParams {
-    protected JsonFilterParams filter;
-    protected boolean prettify;
+public class FormatArguments {
+    private FilterArguments filter;
+    private boolean prettify;
 
     /**
      * Retrieves the filter parameters for JSON strings.
      *
-     * @return A {@link JsonFilterParams} object used for storing filtering
+     * @return A {@link FilterArguments} object used for storing filtering
      *         parameters.
      */
-    public JsonFilterParams getFilter() {
+    public FilterArguments getFilter() {
         return filter;
+    }
+
+    public void setFilter(FilterArguments filter) {
+        this.filter = filter;
     }
 
     /**
@@ -27,5 +31,9 @@ public class JsonFormatParams {
      */
     public boolean getPrettify() {
         return prettify;
+    }
+
+    public void setPrettify(boolean prettify) {
+        this.prettify = prettify;
     }
 }

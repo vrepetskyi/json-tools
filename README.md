@@ -43,18 +43,9 @@ _Get the compiled **JAR** [**there**](https://vrepetskyi.github.io/json-tools/js
 
 ## GUI
 
-<style>
-    img {
-        width: 560px;
-        max-width: 100%;
-    }
-</style>
-
-<div style="display:flex;flex-direction:column;gap:8px">
-    <img src="docs/demo/menu.png" alt="Menu view">
-    <img src="docs/demo/format.png" alt="Formatting view">
-    <img src="docs/demo/compare.png" alt="Comparison view">
-</div>
+<img src="docs/demo/menu.png" alt="Menu view" width="560">
+<img src="docs/demo/format.png" alt="Formatting view" width="560">
+<img src="docs/demo/compare.png" alt="Comparison view" width="560">
 
 ## API
 
